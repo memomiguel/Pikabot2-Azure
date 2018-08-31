@@ -19,10 +19,19 @@ exports.clearData = function () {
 		delete tourData[i];
 };
 
-exports.parse = function (room, message, isIntro, spl) {
+exports.parse = function (room, message, isIntro, spl, toLowerCase) {
 	if (spl[0] !== 'tournament') return;
 	if (!tourData[room]) tourData[room] = {};
 	switch (spl[1]) {
+		case 'create':
+			try{
+				var format = toId(tourData[room].format);
+				if (room == 'lobby' || room == 'monotype' || room == 'tournaments' || room == '1v1' || room == 'neptune' || room == 'hydrocity'){
+				Bot.say('rockethq', '/roompm A ' + format + ' tournament was made in ' + room);
+				}
+			} catch (e){}
+			break;
+
 		case 'update':
 			try {
 				var data = JSON.parse(spl[2]);
@@ -37,6 +46,7 @@ exports.parse = function (room, message, isIntro, spl) {
 					Bot.say(room, '/tour join');
 				} else {
 					if (Features['battle'].TeamBuilder.hasTeam(tourData[room].format)) Bot.say(room, '/tour join');
+
 				}
 			}
 			if (!Settings.lockdown && tourData[room].challenges && tourData[room].challenges.length) {
@@ -52,6 +62,7 @@ exports.parse = function (room, message, isIntro, spl) {
 					Bot.say(room, '/tour acceptchallenge');
 				}
 			}
+
 			break;
 		case 'end':
 		case 'forceend':
