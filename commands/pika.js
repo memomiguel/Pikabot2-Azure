@@ -51,6 +51,16 @@ let getMinValueIndex = (team) => {
 
 	return indexOfMin;
 };
+let setMoney = (nick, money) => {
+	let userMoney = Db('pika').get([nick, "money"]);
+	userMoney += money;
+	Db('pika').set([nick, "money"], userMoney);
+};
+let setQuests = (nick, quests) => {
+	let userQuests = Db('pika').get([nick, "quests"]);
+	userQuests += quests;
+	Db('pika').set([nick, "quests"], userQuests);
+}
 
 /**
  * Populates the team array
@@ -380,6 +390,42 @@ exports.commands = {
 		let playerEXP = Db('pika').get([player, "exp"]);
 
 		return this.reply(player + "'s level: ``" + level + " -> " + currLevel + "`` | EXP: ``" + playerEXP + "``");
+	},
+		pikamoney: function (arg, user, room) {
+		if (!this.can('wall')) return this.reply("``%`` required to use this command!");
+		if (!arg) return this.reply("Help: ``" + this.cmdToken + "pikamoney [player], [money]``");
+
+		let params = arg.split(",");
+		if (params.length < 2) return this.reply("Help: ``" + this.cmdToken + "pikamoney [player], [money]``");
+
+		let player = toId(params[0]);
+		let money = Number(params[1]);
+		if (!playerExists(player)) return this.reply(player + " doesn't exist, register them with ``" + this.cmdToken + "pikareg [player]``");
+		if (!Number.isInteger(money)) return this.reply("The [money] value must be positive integers!");
+
+		setMoney(player, money);
+
+		let playerMoney = Db('pika').get([player, "money"]);
+
+		return this.reply(player + "'s money: ``" + playerMoney + "``");
+	},
+		pikaquests: function (arg, user, room) {
+		if (!this.can('wall')) return this.reply("``%`` required to use this command!");
+		if (!arg) return this.reply("Help: ``" + this.cmdToken + "pikaquests [player], [quests]``");
+
+		let params = arg.split(",");
+		if (params.length < 2) return this.reply("Help: ``" + this.cmdToken + "pikaquests [player], [quests]``");
+
+		let player = toId(params[0]);
+		let quests = Number(params[1]);
+		if (!playerExists(player)) return this.reply(player + " doesn't exist, register them with ``" + this.cmdToken + "pikareg [player]``");
+		if (!Number.isInteger(quests)) return this.reply("The [quests] value must be positive integers!");
+
+		setQuests(player, quests);
+
+		let playerQuests = Db('pika').get([player, "quests"]);
+
+		return this.reply(player + "'s quests: ``" + playerQuests + "``");
 	},
 
 	pikaprofile: function (arg, user, room) {
