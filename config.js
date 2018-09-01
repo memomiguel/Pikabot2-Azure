@@ -46,7 +46,7 @@ exports.watchconfig = true;
 
 exports.nick = 'ThePika-bot';
 
-exports.pass = 'newpassword0901';
+exports.pass = 'mypassword0609';
 
 exports.autoReloginDelay = 60 * 1000;
 
