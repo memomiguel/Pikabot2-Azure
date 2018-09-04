@@ -149,6 +149,12 @@ exports.commands = {
 	this.reply('/roompromote ' + arg + ', +')
 	this.reply('Welcome ' + arg + ' to the Firebars League! Do you wanna test to join us? (Respond with -yes or -no)')
      },
+	: function (arg) {
+	if (!arg) return;
+	if (!this.can("say")) return;
+	this.reply('/roompromote ' + arg + ', +')
+	this.reply('Welcome ' + arg + ' to the Ultra League! Do you wanna test to join us? (Respond with -yes or -no)')
+     },
      yes: function (arg, user, room) {
 	if (!this.can("info")) return;
 	this.reply('/roompromote ' + user + ', $');
@@ -156,7 +162,6 @@ exports.commands = {
      },
      no: function (arg, user, room) {
 	if (!this.can("info")) return;
-	this.reply('/roomdeauth ' + user)
 	this.reply('Ok. Then you can hang out with us!')
      },
      fbshop: function () {
