@@ -434,7 +434,7 @@ exports.commands = {
 
 
 		let packId = arg;
-		let player = user;
+		let player = toId(user);
 		if (!playerExists(player)) return this.reply(player + " doesn't exist, register them with ``" + this.cmdToken + "pikareg [player]``");
 
 		let playerMoney = Db('pika').get([player, "money"]);
