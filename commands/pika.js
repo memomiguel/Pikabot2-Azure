@@ -60,7 +60,8 @@ let setQuests = (nick, quests) => {
 	let userQuests = Db('pika').get([nick, "quests"]);
 	userQuests += quests;
 	Db('pika').set([nick, "quests"], userQuests);
-}
+};
+
 
 /**
  * Populates the team array
@@ -426,6 +427,52 @@ exports.commands = {
 		let playerQuests = Db('pika').get([player, "quests"]);
 
 		return this.reply(player + "'s quests: ``" + playerQuests + "``");
+	},
+		pikabuy: function (arg, user, room) {
+		if (!this.can('wall')) return this.reply("``%`` required to use this command!");
+		if (!arg) return this.reply("Help: ``" + this.cmdToken + "pikabuy [packId]``");
+
+
+		let packId = arg;
+		let player = user;
+		if (!playerExists(player)) return this.reply(player + " doesn't exist, register them with ``" + this.cmdToken + "pikareg [player]``");
+
+		let playerMoney = Db('pika').get([player, "money"]);
+		if (packId == "i1"){ 
+			if (playerMoney < 10) return this.reply("You dont have enough money to buy this pack");
+			setMoney(player, -10);
+			prize = Math.floor((Math.random() * 100));
+			if (prize < 21){ return this.reply(player + "You got a Leftovers!");}
+			if (prize < 41){ return this.reply(player + "You got a Sitrus Berry!");}
+			if (prize < 54){ return this.reply(player + "You got a Silk Scarf!");}
+			if (prize < 67){ return this.reply(player + "You got a Wide Lens!");}
+			if (prize < 80){ return this.reply(player + "You got a Muscle Band!");}
+			if (prize < 91){ return this.reply(player + "You got a Scope Lens!");}
+			if (prize < 101){ return this.reply(player + "You got a Magnet!");}
+            }
+		if (packId == "p1"){ 
+			if (playerMoney < 30) return this.reply("You dont have enough money to buy this pack");
+			setMoney(player, -30);
+			prize = Math.floor((Math.random() * 100));
+			pokemon = "pichu";
+			if (prize < 41){ 
+				level = 10;
+				populateTeam(player, pokemon, level);
+				return this.reply(player + " caught a Lv.: ``" + level + "`` ``" + pokemon + "``!");
+			}
+			if (prize < 76){ 
+				level = 15;
+				populateTeam(player, pokemon, level);
+				return this.reply(player + " caught a Lv.: ``" + level + "`` ``" + pokemon + "``!");
+			}
+			if (prize < 101){ 
+				level = 20;
+				populateTeam(player, pokemon, level);
+				return this.reply(player + " caught a Lv.: ``" + level + "`` ``" + pokemon + "``!");
+			}
+            }
+
+		return this.reply("That is not a valid Id");
 	},
 
 	pikaprofile: function (arg, user, room) {
