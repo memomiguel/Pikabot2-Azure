@@ -441,14 +441,14 @@ exports.commands = {
 		if (packId == "i1"){ 
 			if (playerMoney < 10) return this.reply("You dont have enough money to buy this pack");
 			setMoney(player, -10);
-			prize = Math.floor((Math.random() * 100));
-			if (prize < 21){ return this.reply(player + "You got a Leftovers!");}
-			if (prize < 41){ return this.reply(player + "You got a Sitrus Berry!");}
-			if (prize < 54){ return this.reply(player + "You got a Silk Scarf!");}
-			if (prize < 67){ return this.reply(player + "You got a Wide Lens!");}
-			if (prize < 80){ return this.reply(player + "You got a Muscle Band!");}
-			if (prize < 91){ return this.reply(player + "You got a Scope Lens!");}
-			if (prize < 101){ return this.reply(player + "You got a Magnet!");}
+			let prize = Math.floor((Math.random() * 100));
+			if (prize < 21) return this.reply(player + "You got a Leftovers!");
+			if (prize < 41) return this.reply(player + "You got a Sitrus Berry!");
+			if (prize < 54) return this.reply(player + "You got a Silk Scarf!");
+			if (prize < 67) return this.reply(player + "You got a Wide Lens!");
+			if (prize < 80) return this.reply(player + "You got a Muscle Band!");
+			if (prize < 91) return this.reply(player + "You got a Scope Lens!");
+			if (prize < 101) return this.reply(player + "You got a Magnet!");
             }
 		if (packId == "p1"){ 
 			if (playerMoney < 30) return this.reply("You dont have enough money to buy this pack");
