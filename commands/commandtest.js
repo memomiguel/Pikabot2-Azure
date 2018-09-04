@@ -149,11 +149,12 @@ exports.commands = {
 	this.reply('/roompromote ' + arg + ', +')
 	this.reply('Welcome ' + arg + ' to the Firebars League! Do you wanna test to join us? (Respond with -yes or -no)')
      },
-	: function (arg) {
+	
+	uwelcome: function (arg) {
 	if (!arg) return;
 	if (!this.can("say")) return;
 	this.reply('/roompromote ' + arg + ', +')
-	this.reply('Welcome ' + arg + ' to the Ultra League! Do you wanna test to join us? (Respond with -yes or -no)')
+	this.reply('Welcome ' + arg + ' to the Firebars League! Do you wanna test to join us? (Respond with -yes or -no)')
      },
      yes: function (arg, user, room) {
 	if (!this.can("info")) return;
