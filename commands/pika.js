@@ -111,10 +111,6 @@ let setEXP = (nick, exp) => {
 
 		while (remainingEXP !== 0) {
 			level++;
-			if (Db('pika').get([nick, "level"]) == 1) {
-				this.reply("Rewards for leveling up: 3 rare candies");
-				this.reply("Pokemon Max level: 10 -> 20");
-			}
 			Db('pika').set([nick, "exp"], 0);
 			requiredEXP = ((level + 1) ** 2) / EXP_CONST;
 
@@ -122,6 +118,10 @@ let setEXP = (nick, exp) => {
 				remainingEXP = remainingEXP - requiredEXP;
 			} else {
 				Db('pika').set([nick, "level"], level);
+			if (level == 1) {
+				this.reply("Rewards for leveling up: 3 rare candies");
+				this.reply("Pokemon Max level: 10 -> 20");
+			}
 
 				userEXP += remainingEXP;
 				Db('pika').set([nick, "exp"], remainingEXP);
