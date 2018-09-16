@@ -39,6 +39,12 @@ exports.commands = {
 	this.reply('/etour Challenge Cup 1v1');
 	this.reply('/tour autodq 2');
 	},
+     redo: function () {
+	if (!this.can("info")) return;
+	let prize = Math.floor((Math.random() * 100));
+	if (prize < 34) return this.reply("redo");
+	if (prize < 101) return this.reply("no");
+	},
      randombattle: function (arg, room, user) {
         if (!this.can("info")) return;
 	this.reply('/etour Random Battle');
@@ -149,13 +155,6 @@ exports.commands = {
 	this.reply('/roompromote ' + arg + ', +')
 	this.reply('Welcome ' + arg + ' to the Firebars League! Do you wanna test to join us? (Respond with -yes or -no)')
      },
-	
-	uwelcome: function (arg) {
-	if (!arg) return;
-	if (!this.can("say")) return;
-	this.reply('/roompromote ' + arg + ', +')
-	this.reply('Welcome ' + arg + ' to the Ultra League! Do you wanna test to join us? (Respond with -yes or -no)')
-     },
      yes: function (arg, user, room) {
 	if (!this.can("info")) return;
 	this.reply('/roompromote ' + user + ', $');
@@ -163,6 +162,7 @@ exports.commands = {
      },
      no: function (arg, user, room) {
 	if (!this.can("info")) return;
+	this.reply('/roomdeauth ' + user)
 	this.reply('Ok. Then you can hang out with us!')
      },
      fbshop: function () {
