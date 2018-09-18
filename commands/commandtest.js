@@ -11,10 +11,6 @@ exports.commands = {
 
 	this.reply('/me does a test');
 	},
-	tictactoe: function(arg, by, room){
-		this.reply(user + 'wants to play a Tic Tac Toe game! use -join to join the game.');
-		let p1 = user;
-	},
      test3: function (arg, by, room, cmd) {
         if (!this.can("info")) return this.reply('lol you cant use this command');
 		this.say('rockethq', 'A tournament was made in <<' + room + '>>');
