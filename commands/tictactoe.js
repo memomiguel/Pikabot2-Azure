@@ -12,11 +12,6 @@
 	return txt;
 	}
 
-	function tictactoe(arg, by, room){
-		this.reply(user + 'wants to play a Tic Tac Toe game! use -join to join the game.')
-		let p1 = user;
-	}
-
 	exports.commands = {
 	j: 'join',
 	"in": 'join',
@@ -24,5 +19,10 @@
 		if (by == p1) return this.reply('You are already in the game!');
 		game.userJoin(by);
 		let p2 = by;
+	},
+		ttt: 'tictactoe',
+		tictactoe: function(arg, by, room){
+		this.reply(user + 'wants to play a Tic Tac Toe game! use -join to join the game.')
+		let p1 = user;
 	}
 }
