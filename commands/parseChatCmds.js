@@ -1,6 +1,6 @@
 function parseChat (room, time, by, message) {
 	var user = toId(by);
-	if (room == "codersheaven") this.reply(room, user + ': ' + message);
+	if (message == "hi") Bot.say('Hi' + user);
 	};
 
 exports.init = function () {
