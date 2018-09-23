@@ -1,6 +1,6 @@
 function parseChat (room, time, by, message) {
 	var user = toId(by);
-	if (message == "hi") Bot.say('Hi' + user);
+	if (message == "hi pikabot") Bot.say(room, 'Hi' + user);
 	};
 
 exports.init = function () {
