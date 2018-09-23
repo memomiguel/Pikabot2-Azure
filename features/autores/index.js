@@ -9,6 +9,6 @@ exports.parse = (room, message, isIntro, spl) => {
 	
 	let user = spl[2];
 	if (spl[3].includes("pikabot") || spl[3].includes("ThePika-bot") || spl[3].includes("Pikabot") || spl[3].includes("PikaBot") || spl[3].includes("thepikabot")){
-	if (spl[3].includes("hello") || spl[3].includes("hi ")) Bot.say(room, `Hey there ${toId(user)}!`);
+	if (spl[3].includes("hello") || spl[3].includes("hi ") || spl[3].includes(" hi")) Bot.say(room, `Hey there ${toId(user)}!`);
 	}
 };
