@@ -14,12 +14,12 @@ exports.parse = function (room, message, isIntro, spl) {
 		case 'c':
 			by = spl[1];
 			timeOff = Date.now();
-			parseChat(room, timeOff, by, message);
+			parseChat(room, timeOff, by, message.substr(("|" + spl[0] + "|" + spl[1] + "|").length));
 			break;
 		case 'c:':
 			by = spl[2];
 			timeOff = parseInt(spl[1]) * 1000;
-			parseChat(room, timeOff, by, message);
+			parseChat(room, timeOff, by, message.substr(("|" + spl[0] + "|" + spl[1] + "|" + spl[2] + "|").length));
 			break;
 	}
 };
