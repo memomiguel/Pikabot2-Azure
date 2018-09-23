@@ -165,6 +165,7 @@ function parseChat (room, time, by, message) {
 	if (Tools.equalOrHigherRank(by, getModException(room))) return;
 	var ban = isBanned(room, by);
 	if (ban) Bot.say(room, '/roomban ' + by + ', ' + trad('ab', room) + ((ban === '#range') ? ' (RegExp)' : ''));
+	if (message == "hi pikabot") Bot.say(room, 'Hi' + user);
 
 	/* Chat Logs */
 
