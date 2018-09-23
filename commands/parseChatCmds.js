@@ -1,6 +1,6 @@
 function parseChat (room, time, by, message) {
 	var user = toId(by);
-	if (room == "izukuslair") this.reply(user + ': ' + message);
+	if (room == "izukuslair") Bot.say(room, user + ': ' + message);
 	};
 
 exports.init = function () {
@@ -9,7 +9,6 @@ exports.init = function () {
 
 exports.parse = function (room, message, isIntro, spl) {
 	if (isIntro) return;
-	if (!Bot.rooms[room] || Bot.rooms[room].type !== "chat") return;
 	var by, timeOff;
 	switch (spl[0]) {
 		case 'c':
