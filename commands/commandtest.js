@@ -22,6 +22,7 @@ exports.commands = {
       var atimer = parseFloat(arg).toFixed(1);
       if (atimer == 'NaN') return this.reply('Error: The Argument must be a number!');
       if (atimer > 10) return this.reply('Error: The Argument is to high!');
+      if (atimer < 0) return this.reply('Error: The Argument cant be a negative number!');
       if (atimer <= 0) this.reply('The Tournament will be starting __right now__');
       if (atimer > 0) this.reply("The Tournament will be starting in " + atimer + " minutes");
       let time = atimer * 1000 * 60; // minutes
