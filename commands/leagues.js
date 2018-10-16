@@ -14,7 +14,7 @@ exports.commands = {
 	return;
 	},
 	matchups: function (arg, by, room, cmd) {
-	if (room == "thesyndicate") this.reply('https://docs.google.com/spreadsheets/d/1Vwx3HFMGaRVaG0XMm2ld9rQrIvHUbEB_WjewqF09q2w/edit?usp=sharing');
+	if (room == "thesyndicate") this.reply('https://docs.google.com/spreadsheets/d/1N2acTU4ktFDFwPj0IoRmEuVaD5xxA-fw6fQF3j0otrw/edit#gid=394152832');
 	return;
 	}
 };
