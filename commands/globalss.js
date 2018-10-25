@@ -1,7 +1,7 @@
 global.triviaGame = "sleep";
 
 exports.commands = {
-	triviaStatus: function () {
+	testings: function () {
 		this.reply('test');
 	}
 };
