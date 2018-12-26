@@ -40,6 +40,16 @@ exports.commands = {
 	this.reply('/etour Challenge Cup 1v1');
 	this.reply('/tour autodq 2');
 	},
+     assb2: function () {
+	if (!this.can("info")) return;
+	this.reply('/etour gen7azuresuperstaffbrosii');
+	this.reply('/tour autodq 2');
+	},
+     assb2cc1v1: function () {
+	if (!this.can("info")) return;
+	this.reply('/etour gen7azuresuperstaffbrosiichallengecup1v1');
+	this.reply('/tour autodq 2');
+	},
      redo: function () {
 	if (!this.can("info")) return;
 	let prize = Math.floor((Math.random() * 100));
