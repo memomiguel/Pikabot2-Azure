@@ -118,7 +118,7 @@ exports.parse = function (room, message, isIntro, spl) {
 				for (var i in data)
 					tourData[room][i] = data[i];
 			} catch (e){}
-			Leaderboards.onTournamentEnd(room, tourData[room]);
+			let lbData = Leaderboards.onTournamentEnd(room, tourData[room]);
 			// console.log(!lbData, lbData.winner, lbData.finalist);
 			if (lbData) Bot.say(room, `Congratulations to ${lbData.winner} for winning the tournament! They receive 100 points. Runner-up ${lbData.finalist} receives 40 points!`);
 			delete tourData[room];
