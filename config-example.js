@@ -92,10 +92,11 @@ exports.exceptions = {
 *
 */
 
-exports.ranks = ['+', '\u2605', '%', '@', '*', '#', '&', '~'];
+exports.ranks = ['+', '\u2605', '$', '%', '@', '*', '#', '&', '~'];
 
 exports.globalPermissions = {
 	'voice': '+', //Min rank to broadcast in a server
+	'operator': '$',
 	'driver': '%', //Min rank to mute. Also min staff rank
 	'moderator': '@', //Min rank to ban
 	'roomowner': '#', //Rank for using room settings commands like set, lang, mod...
