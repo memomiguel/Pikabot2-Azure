@@ -120,7 +120,7 @@ exports.parse = function (room, message, isIntro, spl) {
 			} catch (e){}
 			let lbData = Leaderboards.onTournamentEnd(room, tourData[room]);
 			console.log(!lbData, lbData.winner, lbData.finalist);
-			this.reply('Congratulations to ' + lbData.winner + ' for winning the tournament! They recieve 100 points. Runner up ' + lbData.finalist + ' recieve 40 points');
+			Bot.say(room, 'Congratulations to ${lbData.winner} for winning the tournament! They receive 100 points. Runner-up ${lbData.finalist} receives 40 points!');
 			if (tournaments[room] && tournaments[room].startTimer) clearTimeout(tournaments[room].startTimer);
 			if (tournaments[room]) delete tournaments[room];
 			break;
