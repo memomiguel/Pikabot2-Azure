@@ -221,7 +221,7 @@ exports.commands = {
 				for (var i = 0; i < 5 && i < top.length; i++) {
 					topResults.push("__#" + (i + 1) + "__ **" + Tools.toName(top[i][0]) + "** (" + top[i][6] + ")");
 				}
-				this.restrictReply("**" + Tools.toName(tryGetRoomName(tarRoom)) + "** | " + topResults.join(", "), "rank");
+				this.restrictReply("**" + Tools.toName(tryGetRoomName(tarRoom)) + "** | " + topResults.join(", "), "info");
 				break;
 			case "table":
 				if (!this.isRanked('roomowner')) return false;
