@@ -118,8 +118,9 @@ exports.parse = function (room, message, isIntro, spl) {
 				for (var i in data)
 					tourData[room][i] = data[i];
 			} catch (e){}
-			Leaderboards.onTournamentEnd(room, tourData[room]);
-			delete tourData[room];
+			let lbData = Leaderboards.onTournamentEnd(room, tourData[room]);
+			console.log(!lbData, lbData.winner, lbData.finalist);
+			this.reply('Congratulations to ' lbData.winner ' for winning the tournament! They recieve 100 points. Runner up ' lbData.finalist ' recieve 40 points')
 			if (tournaments[room] && tournaments[room].startTimer) clearTimeout(tournaments[room].startTimer);
 			if (tournaments[room]) delete tournaments[room];
 			break;
