@@ -10,8 +10,8 @@ exports.commands = {
     },
   season: function (arg, user, room){
     if (room !== "pikachuvalley") return;
+    if(db('message').get(news)==NULL) return this.reply("Nothing set now, use ``-setseason [message]`` to set a message");
     let display = Db('message').get(news);
-    if (!display) return this.reply("Nothing set now, use ``-setseason [message]`` to set a message");
     this.reply(display);
     },
 };
