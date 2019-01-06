@@ -2,7 +2,7 @@
 
 exports.commands = {
   setseason: function (arg, user, room) {
-    if (room !== "neptune" || "pikachuvalley") return;
+    if (room !== "neptune" || "pikachuvalley") return this.reply("something wrong here");
     if (!this.can('pikareg')) return this.reply("``&`` required to use this command!");
     if (!arg) return this.reply("Help: ``" + this.cmdToken + "setseason [message]``");
     Db('message').set(news, arg);
