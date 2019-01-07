@@ -8,7 +8,7 @@ exports.commands = {
  	 },
  	 season: function (arg, user, room){
  	   if (room !== "pikachuvalley") return;
- 	   let display = Db('pika').get("news");
+ 	   let display = Db('message').get("news");
  	   this.reply(display);
     	},
 };
