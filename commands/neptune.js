@@ -7,6 +7,7 @@ exports.commands = {
  	   this.reply("Season message was succesfully set to: " + arg);
  	 },
  	 season: function (arg, user, room){
+	   if (!this.can('info')) return;
  	   if (room !== "neptune") return;
  	   let display = Db('message').get("news");
  	   this.reply(display);
