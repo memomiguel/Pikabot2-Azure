@@ -8,7 +8,6 @@ exports.commands = {
  	 },
  	 season: function (arg, user, room){
  	   if (room !== "pikachuvalley") return;
- 	   if(Db('message').get("news")==NULL) return this.reply("Nothing set now, use ``-setseason [message]`` to set a message");
  	   let display = Db('pika').get("news");
  	   this.reply(display);
     	},
