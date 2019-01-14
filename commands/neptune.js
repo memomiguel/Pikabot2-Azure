@@ -1,6 +1,6 @@
 exports.commands = {
 	setseason: function (arg, user, room) {
- 	   if (room !== "izukuslair") return this.reply("something wrong here");
+ 	   if (room !== "neptune") return this.reply("something wrong here");
  	   if (!this.isRoomRanked(room, '&')) return this.reply("``&`` required to use this command!");
  	   if (!arg) return this.reply("Help: ``" + this.cmdToken + "setseason [message]``");
  	   Db('message').set("news", arg);
