@@ -184,5 +184,9 @@ exports.commands = {
 	if (!this.can("info")) return;
 	this.reply('/tour join');
      },
+     ezleave: function (arg, user, room) {
+	if (!this.can("say")) return;
+	this.reply('/tour leave');
+     },
 
 };
