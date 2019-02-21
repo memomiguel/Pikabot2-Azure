@@ -7,7 +7,7 @@ exports.commands = {
 	this.reply('/etour monotype');
         this.reply('/tour scouting off');
 	this.reply('/tour autodq 2');
-	this.reply('/tour name Monothreat' + randType);
+	this.reply('/tour name Monothreat ' + randType);
         this.reply('/wall This is a ' + randType + ' monothreat tournament, bring ' + randType + ' or be disqualified!');
     	},
      monotype: function () {
