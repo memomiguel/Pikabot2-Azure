@@ -1,5 +1,11 @@
 
 exports.commands = {
+    monothreat: function(target, room, user) {
+        if (!this.can("info")) return false;
+        let types = ['Bug', 'Dark', 'Dragon', 'Electric', 'Fairy', 'Fighting', 'Fire', 'Flying', 'Ghost', 'Grass', 'Ground', 'Ice', 'Normal', 'Poison', 'Psychic', 'Rock', 'Steel', 'Water'];
+        let randType = types[~~(Math.random() * types.length)];
+        this.send(`Type: ${randType}`);
+    	},
      monotype: function () {
         if (!this.can("info")) return;
 	this.reply('/etour monotype');
