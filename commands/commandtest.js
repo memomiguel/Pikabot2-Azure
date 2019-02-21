@@ -4,7 +4,7 @@ exports.commands = {
         if (!this.can("info")) return false;
         let types = ['Bug', 'Dark', 'Dragon', 'Electric', 'Fairy', 'Fighting', 'Fire', 'Flying', 'Ghost', 'Grass', 'Ground', 'Ice', 'Normal', 'Poison', 'Psychic', 'Rock', 'Steel', 'Water'];
         let randType = types[~~(Math.random() * types.length)];
-        this.reply('Type: ${randType}');
+        this.reply('Type: ' + randType);
     	},
      monotype: function () {
         if (!this.can("info")) return;
