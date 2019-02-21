@@ -4,7 +4,11 @@ exports.commands = {
         if (!this.can("info")) return false;
         let types = ['Bug', 'Dark', 'Dragon', 'Electric', 'Fairy', 'Fighting', 'Fire', 'Flying', 'Ghost', 'Grass', 'Ground', 'Ice', 'Normal', 'Poison', 'Psychic', 'Rock', 'Steel', 'Water'];
         let randType = types[~~(Math.random() * types.length)];
-        this.reply('Type: ' + randType);
+	this.reply('/etour monotype');
+        this.reply('/tour scouting off');
+	this.reply('/tour autodq 2');
+	this.reply('/tour name Monothreat' + randType);
+        this.reply('/wall This is a ' + randType + ' monothreat tournament, bring ' + randType + ' or be disqualified!');
     	},
      monotype: function () {
         if (!this.can("info")) return;
