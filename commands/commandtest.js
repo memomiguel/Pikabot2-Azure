@@ -68,7 +68,14 @@ exports.commands = {
 	},
      randombattle: function (arg, room, user) {
         if (!this.can("info")) return;
-	this.reply('/etour Random Battle');
+	if (arg == "1") this.reply('/etour gen1randombattle');
+	if (arg == "2") this.reply('/etour gen2randombattle');
+	if (arg == "3") this.reply('/etour gen3randombattle');
+	if (arg == "4") this.reply('/etour gen4randombattle');
+	if (arg == "5") this.reply('/etour gen5randombattle');
+	if (arg == "6") this.reply('/etour gen6randombattle');
+	if (arg == "7") this.reply('/etour gen7randombattle');
+	if (!arg) this.reply('/etour randombattle');
 	this.reply('/tour autodq 2');
 	},
      randomdoubles: function (arg, room, user) {
