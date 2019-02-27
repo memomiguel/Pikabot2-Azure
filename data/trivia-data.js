@@ -76,7 +76,7 @@ exports.questions = [
 	{q: "Holders of this item cannot become infatuated, and they also guarantee their offspring inherit 5 stats from its parents.", a: "Destiny Knot"},
 	{q: "Defeating the Winstrate family and talking to them afterward allows the player to receive this item, which doubles the EV gains of its holder.", a: "Macho Brace"},
 	{q: "This item is found deep inside Mt. Ember after the player receives the National Pokedex.", a: "Ruby"},
-	{q: "Sinnoh's underground can be visited once the player has obtained this Key Item.", a: "Esplorer Kit"},
+	{q: "Sinnoh's underground can be visited once the player has obtained this Key Item.", a: "Explorer Kit"},
 	{q: "This item summons Heatran when brought to Stark Mountain or Reversal Mountain.", a: "Magma Stone"},
 	{q: "What Pokemon is based off of antlion larvae?", a: "Trapinch"},
 	{q: "What Pokemon trainer gives you a Dusk Stone in ORAS after defeating them?", a: "Hex Maniac Valerie"},
