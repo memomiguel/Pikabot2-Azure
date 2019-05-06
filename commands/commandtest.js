@@ -130,6 +130,11 @@ exports.commands = {
 	this.reply('/etour Azure Super Staff Bros.');
 	this.reply('/tour autodq 2');
 	},
+     dds: function (arg, room, user) {
+        if (!this.can("info")) return;
+	this.reply('/etour [Digimon] Digimon Showdown');
+	this.reply('/tour autodq 2');
+	},
      assbdoubles: function (arg, room, user) {
         if (!this.can("info")) return;
 	this.reply('/etour Azure Super Staff Bros. Doubles');
