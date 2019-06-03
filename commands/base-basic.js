@@ -106,46 +106,6 @@ exports.commands = {
 		this.pmReply(text);
 	},
 
-	publicalts: 'alts',
-	alts: function (arg) {
-		if (!this.can('searchbattle')) return this.reply("Command disabled");
-		var text = '';
-		arg = toId(arg);
-		if (!arg || arg.length > 18) return this.pmReply(this.trad('inv'));
-		var alts = Settings.userManager.getAlts(arg);
-		if (alts && alts.length) {
-			if (this.can("alts")) {
-				var cmds = [];
-				var toAdd;
-				text += this.trad('alts') + " " + Settings.userManager.getName(arg) + ": ";
-				for (var i = 0; i < alts.length; i++) {
-					toAdd = alts[i] + (i < alts.length - 1 ? ", " : "");
-					if ((text + toAdd).length > 300) {
-						cmds.push(text);
-						text = "";
-					}
-					text += toAdd;
-				}
-				if (text.length) cmds.push(text);
-				this.pmReply(cmds);
-				return;
-			} else {
-				if (alts.length <= 10) {
-					text += this.trad('alts') + " " + Settings.userManager.getName(arg) + ": " + alts.join(", ");
-				} else {
-					var fAlts = [];
-					for (var i = alts.length - 1; i >= 0 && i > alts.length - 10; i--) {
-						fAlts.push(alts[i]);
-					}
-					text += this.trad('alts') + " " + Settings.userManager.getName(arg) + ": " + fAlts.join(", ") + ", (" + (alts.length - 10) + this.trad('more') + ")";
-				}
-			}
-		} else {
-			text += this.trad('n') + ' ' +  Settings.userManager.getName(arg);
-		}
-		this.pmReply(text);
-	},
-
 	say: function (arg) {
 		if (!arg) return;
 		if (!this.can('say')) return;
