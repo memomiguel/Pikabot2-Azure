@@ -156,6 +156,7 @@ exports.commands = {
 		if (Object.keys(game.users).length < 1) return this.reply(trans("noplayers", room));
 		game.start();
 	},
+	stay: 'stand',
 	stand: function (arg, by, room, cmd, game) {
 		game.stand(by);
 	},
