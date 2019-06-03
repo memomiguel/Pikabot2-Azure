@@ -108,6 +108,7 @@ exports.commands = {
 
 	publicalts: 'alts',
 	alts: function (arg) {
+		if (!this.can("searchbattle")) return this.reply("Command disabled");
 		var text = '';
 		arg = toId(arg);
 		if (!arg || arg.length > 18) return this.pmReply(this.trad('inv'));
