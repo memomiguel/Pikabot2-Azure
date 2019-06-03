@@ -93,8 +93,8 @@ exports.newGame = function (room, opts) {
 	var generatorOpts = {
 		room: room,
 		title: exports.title,
-		maxGames: 5,
-		maxPoints: 0,
+		maxGames: 200,
+		maxPoints: 5,
 		waitTime: 2 * 1000,
 		answerTime: 30 * 1000,
 		wordGenerator: wordGenerator
