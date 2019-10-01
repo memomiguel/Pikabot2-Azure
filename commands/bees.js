@@ -10,7 +10,7 @@ exports.game = "bees";
 exports.aliases = ["meme", "memes"];
 
 
-class BeesGame extends Rooms.botGame {
+class BeesGame extends rooms.botGame {
     constructor(room) {
         super(room);
         
