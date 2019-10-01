@@ -6,7 +6,8 @@ const WAIT_DURATION = 3000;
 const STINGS_PER_PLAYER = 6;
 const BASE_HIDE_CHANCE = 0.05;
 
-exports.game = "bees";
+exports.id = "bees";
+exports.title = 'Bees';
 exports.aliases = ["meme", "memes"];
 
 
