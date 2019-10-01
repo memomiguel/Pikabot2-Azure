@@ -36,7 +36,7 @@ function parseChat (room, time, by, msg) {
 			if (!id) return;
 			var options = {
 				host: 'www.googleapis.com',
-				path: '/youtube/v3/videos?id=' + id + '&key=AIzaSyBHyOyjHSrOW5wiS5A55Ekx4df_qBp6hkQ&fields=items(snippet(channelId,title,categoryId))&part=snippet'
+				path: '/youtube/v3/videos?id=' + id + '&key=AIzaSyCQP1tz3PRcl0cZxhD4kZGqGD4T_oKU5Io&fields=items(snippet(channelId,title,categoryId))&part=snippet'
 			};
 			var callback = function (response) {
 				var str = '';
