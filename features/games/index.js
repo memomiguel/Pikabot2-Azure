@@ -13,7 +13,7 @@ var gamesList = [
 	'trivia.js', 'kunc.js',
 	'blackjack.js',
 	'ambush.js',
-	'passthebomb.js'
+	'passthebomb.js','bees.js'
 ];
 
 var Builders = exports.Builders = {};
