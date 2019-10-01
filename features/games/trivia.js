@@ -94,7 +94,7 @@ exports.newGame = function (room, opts) {
 		room: room,
 		title: exports.title,
 		maxGames: 200,
-		maxPoints: 5,
+		maxPoints: 6,
 		waitTime: 2 * 1000,
 		answerTime: 30 * 1000,
 		wordGenerator: wordGenerator
