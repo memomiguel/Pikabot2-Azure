@@ -19,6 +19,7 @@ exports.commands = {
 	kunc: 'execgame',
 	ambush: 'execgame',
 	passthebomb: 'execgame',
+	bees: 'execgame',
 
 	/* General commands for games */
 	games: 'game',
