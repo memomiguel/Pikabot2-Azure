@@ -125,7 +125,7 @@ let setEXP = (nick, exp) => {
 
 				remainingEXP = 0;
 			}
-		}
+		
 	} else if (obtainedEXP === requiredEXP) {
 		level++;
 		Db('pika').set([nick, "exp"], 0);
