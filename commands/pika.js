@@ -133,6 +133,10 @@ let setEXP = (nick, exp) => {
 		level++;
 		Db('pika').set([nick, "exp"], 0);
 		Db('pika').set([nick, "level"], level);
+			if (level == 1) {
+				this.reply("Rewards for leveling up: 3 rare candies");
+				this.reply("Pokemon Max level: 10 -> 20");
+			}
 	} else {
 		userEXP += exp;
 		Db('pika').set([nick, "exp"], userEXP);
@@ -396,7 +400,7 @@ exports.commands = {
 
 		return this.reply(player + "'s level: ``" + level + " -> " + currLevel + "`` | EXP: ``" + playerEXP + "``");
 	},
-		pikamoney: function (arg, user, room) {
+	pikamoney: function (arg, user, room) {
 		if (!this.can('wall')) return this.reply("``%`` required to use this command!");
 		if (!arg) return this.reply("Help: ``" + this.cmdToken + "pikamoney [player], [money]``");
 
@@ -414,7 +418,7 @@ exports.commands = {
 
 		return this.reply(player + "'s money: ``" + playerMoney + "``");
 	},
-		pikaquests: function (arg, user, room) {
+	pikaquests: function (arg, user, room) {
 		if (!this.can('wall')) return this.reply("``%`` required to use this command!");
 		if (!arg) return this.reply("Help: ``" + this.cmdToken + "pikaquests [player], [quests]``");
 
@@ -432,7 +436,7 @@ exports.commands = {
 
 		return this.reply(player + "'s quests: ``" + playerQuests + "``");
 	},
-		pikabuy: function (arg, user, room) {
+	pikabuy: function (arg, user, room) {
 		if (!this.can('wall')) return this.reply("``%`` required to use this command!");
 		if (!arg) return this.reply("Help: ``" + this.cmdToken + "pikabuy [packId]``");
 
