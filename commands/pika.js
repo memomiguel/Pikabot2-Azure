@@ -118,9 +118,6 @@ let setEXP = (nick, exp) => {
 				remainingEXP = remainingEXP - requiredEXP;
 			} else {
 				Db('pika').set([nick, "level"], level);
-			if (Db('pika').get([nick, "level"]) == 1) {
-				this.reply("Rewards for leveling up: 3 rare candies");
-				this.reply("Pokemon Max level: 10 -> 20");
 			}
 
 				userEXP += remainingEXP;
@@ -133,10 +130,7 @@ let setEXP = (nick, exp) => {
 		level++;
 		Db('pika').set([nick, "exp"], 0);
 		Db('pika').set([nick, "level"], level);
-			if (Db('pika').get([nick, "level"]) == 1) {
-				this.reply("Rewards for leveling up: 3 rare candies");
-				this.reply("Pokemon Max level: 10 -> 20");
-			}
+
 	} else {
 		userEXP += exp;
 		Db('pika').set([nick, "exp"], userEXP);
@@ -397,7 +391,8 @@ exports.commands = {
 
 		let currLevel = Db('pika').get([player, "level"]);
 		let playerEXP = Db('pika').get([player, "exp"]);
-
+		
+		if (currLevel == 1 && level == 0){ this.reply('Rewards for leveling up: Rare Candies: +2, Max level: 10 -> 20 '};
 		return this.reply(player + "'s level: ``" + level + " -> " + currLevel + "`` | EXP: ``" + playerEXP + "``");
 	},
 	pikamoney: function (arg, user, room) {
