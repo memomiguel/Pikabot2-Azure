@@ -392,7 +392,7 @@ exports.commands = {
 		let currLevel = Db('pika').get([player, "level"]);
 		let playerEXP = Db('pika').get([player, "exp"]);
 		
-		if (currLevel == 1 && level == 0){ this.reply('Rewards for leveling up: Rare Candies: +2, Max level: 10 -> 20 '};
+		if (currLevel == 1 && level == 0) this.reply('Rewards for leveling up: Rare Candies: +2, Max level: 10 -> 20 ');
 		return this.reply(player + "'s level: ``" + level + " -> " + currLevel + "`` | EXP: ``" + playerEXP + "``");
 	},
 	pikamoney: function (arg, user, room) {
