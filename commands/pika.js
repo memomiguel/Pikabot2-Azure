@@ -431,6 +431,30 @@ exports.commands = {
 
 		return this.reply(player + "'s quests: ``" + playerQuests + "``");
 	},
+	pikaquestreward: function (arg, user, room) {
+		if (!this.can('wall')) return this.reply("``%`` required to use this command!");
+		if (!arg) return this.reply("Help: ``" + this.cmdToken + "pikaquests [player], [quests]``");
+
+		let params = arg.split(",");
+		if (params.length < 2) return this.reply("Help: ``" + this.cmdToken + "pikaquests [player], [quests]``");
+
+		let player = toId(params[0]);
+		let quest = Number(params[1]);
+		
+		let playerQuests = Db('pika').get([nick, "quests"]);
+		
+		if (quest == 1){
+			if (playerQuests == 0){
+			setQuests(player, 1);
+			pikaxp(player, 3);
+			setMoney(player, 6);
+			this.reply("Rewards for completing mision 1: 3 exp + 6 coins");
+			} else {
+				setMoney(player, 1);
+				this.reply("Rewards for repeating mision 1: 1 coins");
+			}
+		}
+	},
 	pikabuy: function (arg, user, room) {
 		if (!this.can('wall')) return this.reply("``%`` required to use this command!");
 		if (!arg) return this.reply("Help: ``" + this.cmdToken + "pikabuy [packId]``");
