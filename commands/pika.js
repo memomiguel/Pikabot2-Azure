@@ -446,7 +446,12 @@ exports.commands = {
 		if (quest == 1){
 			if (playerQuests == 0){
 			setQuests(player, 1);
-			pikaxp(player, 3);
+			setEXP(player, 3);
+			let currLevel = Db('pika').get([player, "level"]);
+			let playerEXP = Db('pika').get([player, "exp"]);
+		
+			if (currLevel == 1 && level == 0) this.reply('Rewards for leveling up: Rare Candies: +2, Max level: 10 -> 20 ');
+			return this.reply(player + "'s level: ``" + level + " -> " + currLevel + "`` | EXP: ``" + playerEXP + "``");
 			setMoney(player, 6);
 			this.reply("Rewards for completing mision 1: 3 exp + 6 coins");
 			} else {
