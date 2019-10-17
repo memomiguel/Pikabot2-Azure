@@ -485,7 +485,7 @@ exports.commands = {
 		if (packId == "p1"){ 
 			if (playerMoney < 30) return this.reply("You dont have enough money to buy this pack");
 			setMoney(player, -30);
-			prize = Math.floor((Math.random() * 100));
+			let prize = Math.floor((Math.random() * 100));
 			pokemon = "pichu";
 			if (prize < 41){ 
 				level = 10;
