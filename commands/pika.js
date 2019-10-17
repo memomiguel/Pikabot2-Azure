@@ -488,17 +488,17 @@ exports.commands = {
 			let prize = Math.floor((Math.random() * 100));
 			let pokemon = "pichu";
 			if (prize < 41){ 
-				level = 10;
+				let level = 10;
 				populateTeam(player, pokemon, level);
 				return this.reply(player + " caught a Lv.: ``" + level + "`` ``" + pokemon + "``!");
 			}
 			if (prize < 76){ 
-				level = 15;
+				let level = 15;
 				populateTeam(player, pokemon, level);
 				return this.reply(player + " caught a Lv.: ``" + level + "`` ``" + pokemon + "``!");
 			}
 			if (prize < 101){ 
-				level = 20;
+				let level = 20;
 				populateTeam(player, pokemon, level);
 				return this.reply(player + " caught a Lv.: ``" + level + "`` ``" + pokemon + "``!");
 			}
