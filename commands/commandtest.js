@@ -4,18 +4,24 @@ exports.commands = {
         if (!this.can("info")) return false;
         let types = ['Bug', 'Dark', 'Dragon', 'Electric', 'Fairy', 'Fighting', 'Fire', 'Flying', 'Ghost', 'Grass', 'Ground', 'Ice', 'Normal', 'Poison', 'Psychic', 'Rock', 'Steel', 'Water'];
         let randType = types[~~(Math.random() * types.length)];
-	this.reply('/etour monotype');
+	this.reply('/etour gen8monotype');
         this.reply('/tour scouting off');
 	this.reply('/tour autodq 2');
 	this.reply('/tour name Monothreat ' + randType);
         this.reply('/wall This is a ' + randType + ' monothreat tournament, bring ' + randType + ' or be disqualified!');
     	},
-     monotype: function () {
+     monotype: function (arg, room, user) {
         if (!this.can("info")) return;
-	this.reply('/etour monotype');
-        this.reply('/tour scouting off');
+	if (arg == "1") this.reply('/etour gen1monotype');
+	if (arg == "2") this.reply('/etour gen2monotype');
+	if (arg == "3") this.reply('/etour gen3monotype');
+	if (arg == "4") this.reply('/etour gen4monotype');
+	if (arg == "5") this.reply('/etour gen5monotype');
+	if (arg == "6") this.reply('/etour gen6monotype');
+	if (arg == "7") this.reply('/etour gen7monotype');
+	if (arg == "8") this.reply('/etour gen8monotype');
+	if (!arg) this.reply('/etour gen8monotype');
 	this.reply('/tour autodq 2');
-	},
      test2: function (arg, user, room) {
         if (!this.can("info")) return this.reply('lol you cant use this command');
 
@@ -47,7 +53,7 @@ exports.commands = {
      },
      cc1v1: function () {
 	if (!this.can("info")) return;
-	this.reply('/etour Challenge Cup 1v1');
+	this.reply('/etour gen8challengecup1v1');
 	this.reply('/tour autodq 2');
 	},
      assb2: function () {
@@ -55,9 +61,24 @@ exports.commands = {
 	this.reply('/etour gen7azuresuperstaffbrosii');
 	this.reply('/tour autodq 2');
 	},
+	assb3: function () {
+	if (!this.can("info")) return;
+	this.reply('/etour gen7azuresuperstaffbrosiii');
+	this.reply('/tour autodq 2');
+	},
      assb2cc1v1: function () {
 	if (!this.can("info")) return;
 	this.reply('/etour gen7azuresuperstaffbrosiichallengecup1v1');
+	this.reply('/tour autodq 2');
+	},
+	assb3cc1v1: function () {
+	if (!this.can("info")) return;
+	this.reply('/etour gen7azuresuperstaffbrosiiichallengecup1v1');
+	this.reply('/tour autodq 2');
+	},
+	assb3doubles: function () {
+	if (!this.can("info")) return;
+	this.reply('/etour gen7azuresuperstaffbrosiiidoubles');
 	this.reply('/tour autodq 2');
 	},
      redo: function () {
@@ -75,7 +96,8 @@ exports.commands = {
 	if (arg == "5") this.reply('/etour gen5randombattle');
 	if (arg == "6") this.reply('/etour gen6randombattle');
 	if (arg == "7") this.reply('/etour gen7randombattle');
-	if (!arg) this.reply('/etour randombattle');
+	if (arg == "8") this.reply('/etour gen8randombattle');
+	if (!arg) this.reply('/etour gen8randombattle');
 	this.reply('/tour autodq 2');
 	},
      randomdoubles: function (arg, room, user) {
@@ -85,12 +107,12 @@ exports.commands = {
 	},
      monotyperandom: function (arg, room, user) {
         if (!this.can("info")) return;
-	this.reply('/etour Monotype Random Battle');
+	this.reply('/etour gen8monotyperandombattle');
 	this.reply('/tour autodq 2');
 	},
      metronomecc1v1: function (arg, room, user) {
         if (!this.can("info")) return;
-	this.reply('/etour Metronome Challenge Cup 1v1');
+	this.reply('/etour gen8metronomechallengecup1v1');
 	this.reply('/tour autodq 2');
 	},
      spacetimefuntimes: function (arg, room, user) {
@@ -100,19 +122,19 @@ exports.commands = {
 	},
      ou: function (arg, room, user) {
         if (!this.can("info")) return;
-	this.reply('/etour OU');
+	this.reply('/etour gen8ou');
         this.reply('/tour scouting off');
 	this.reply('/tour autodq 2');
 	},
      e1v1: function (arg, room, user) {
         if (!this.can("info")) return;
-	this.reply('/etour 1v1');
+	this.reply('/etour gen81v1');
         this.reply('/tour scouting off');
 	this.reply('/tour autodq 2');
 	},
      monotypecc1v1: function (arg, room, user) {
         if (!this.can("info")) return;
-	this.reply('/etour Monotype Challenge Cup 1v1');
+	this.reply('/etour gen8monotypechallengecup1v1');
 	this.reply('/tour autodq 2');
 	},
      azuremonsrandoms: function (arg, room, user) {
@@ -142,12 +164,12 @@ exports.commands = {
 	},
      cc2v2: function (arg, room, user) {
         if (!this.can("info")) return;
-	this.reply('/etour Challenge Cup 2v2');
+	this.reply('/etour gen8challengecup2v2');
 	this.reply('/tour autodq 2');
 	},
      randommonocolor: function (arg, room, user) {
         if (!this.can("info")) return;
-	this.reply('/etour Random Monocolor');
+	this.reply('/etour gen8randommonocolor');
 	this.reply('/tour autodq 2');
 	},
      battlefactorybss: function (arg, room, user) {
@@ -162,7 +184,7 @@ exports.commands = {
 	},
      metronome: function (arg, room, user) {
         if (!this.can("info")) return;
-	this.reply('/etour Metronome');
+	this.reply('/etour gen8metronome');
 	this.reply('/tour autodq 2');
 	},
      hackmonscup: function (arg, room, user) {
@@ -177,26 +199,6 @@ exports.commands = {
 	this.reply('/roompromote ' + arg + ', $')
 	this.reply('Welcome ' + arg + ' to the Pikachu Valley!')
      },
-     fbwelcome: function (arg) {
-	if (!arg) return;
-	if (!this.can("say")) return;
-	this.reply('/roompromote ' + arg + ', +')
-	this.reply('Welcome ' + arg + ' to the Firebars League! Do you wanna test to join us? (Respond with -yes or -no)')
-     },
-     yes: function (arg, user, room) {
-	if (!this.can("info")) return;
-	this.reply('/roompromote ' + user + ', $');
-	this.reply('Thank you so much! We appreciate that!');
-     },
-     no: function (arg, user, room) {
-	if (!this.can("info")) return;
-	this.reply('/roomdeauth ' + user)
-	this.reply('Ok. Then you can hang out with us!')
-     },
-     fbshop: function () {
-        if (!this.can("wall")) return;
-	this.reply('/addhtmlbox <!--ROOM SHOP--> <center><img src="https://vignette.wikia.nocookie.net/pokemon/images/4/45/Victini.png/revision/latest?cb=20131023215205" height="120" width="100" align="left"><img style="transform: scale(-1, 1)" src="https://vignette.wikia.nocookie.net/pokemon/images/4/45/Victini.png/revision/latest?cb=20131023215205" height="120" width="100" align="right"><br><br><img src="https://i.imgur.com/gaFIw3m.png" height="80" width="240"><br><br><br><table style="width: 100%; background-color: #eb6a30 ; color: black ; border: 2px solid Black ; padding: 2px ; border-radius: 9px" cellspacing="2" cellpadding="3" border="1"><tbody><tr><th style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; font-family: Arial">Item</th><th style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; font-family: Arial">Description</th><th style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; font-family: Arial">Price</th></tr><tr><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px"><center><button style="border: 2px solid Black ; background: none ; border-radius: 9px ; width: 100px ; font-family: Arial" name="send" value="/forcetransfermoney TheFirebarsLeague, 5">Go again</button></center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>Have a retry for your gym leader position</center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>5</center></td></tr><tr><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px"><center><button style="border: 2px solid Black ; background: none ; border-radius: 9px ; width: 100px ; font-family: Arial" name="send" value="/forcetransfermoney TheFirebarsLeague, 5">Leveling up</button></center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>Buy this to gain access to Room Voice.</center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>5</center></td></tr><tr><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px"><center><button style="border: 2px solid Black ; background: none ; border-radius: 9px ; width: 100px ; font-family: Arial" name="send" value="/forcetransfermoney TheFirebarsLeague, 10">Patch me through</button></center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>Buy this to gain access to Room Operator.</center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>10</center></td></tr><tr><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px"><center><button style="border: 2px solid Black ; background: none ; border-radius: 9px ; width: 100px ; font-family: Arial" name="send" value="/forcetransfermoney TheFirebarsLeague, 1">Overriden</button></center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>Pick up the tier for a tour.</center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>1</center></td></tr><tr><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px"><center><button style="border: 2px solid Black ; background: none ; border-radius: 9px ; width: 100px ; font-family: Arial" name="send" value="/forcetransfermoney TheFirebarsLeague, 7">Shut up!</button></center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>Mute a league member for 7 minutes.</center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>7</center></td></tr><tr><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px"><center><button style="border: 2px solid Black ; background: none ; border-radius: 9px ; width: 100px ; font-family: Arial" name="send" value="/forcetransfermoney TheFirebarsLeague, 20">Disappear!</button></center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>Mute a league member below & for 1 hour!.</center></td><td style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; height: 32px ; font-family: Arial"><center>20</center></td></tr></tbody></table><br><br><div style="background-color: #eb6a30 ; color: black ; border: 2px solid Black ; padding: 2px ; border-radius: 9px"><div style"style="border-radius: 9px ; border: 2px solid Black ; background: #faea9c ; font-family: Arial">Screen shot proof of your purchase or either inform a staff before you do so! Only notified purchases with proof are consided!</div></div></center> <!--ROOM SHOP-->');
-	},
      ezjoin: function (arg, user, room) {
 	if (!this.can("info")) return;
 	this.reply('/tour join');
