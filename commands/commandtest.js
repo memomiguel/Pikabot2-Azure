@@ -22,6 +22,7 @@ exports.commands = {
 	if (arg == "8") this.reply('/etour gen8monotype');
 	if (!arg) this.reply('/etour gen8monotype');
 	this.reply('/tour autodq 2');
+     },
      test2: function (arg, user, room) {
         if (!this.can("info")) return this.reply('lol you cant use this command');
 
