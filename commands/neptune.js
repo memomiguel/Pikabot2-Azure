@@ -13,7 +13,7 @@ exports.commands = {
  	   this.reply(display);
     	},
 	tourprize: function (arg, user, room) {
-	   if (room !== "pikachuvalley") return this.reply("Atlantis exclusive command");
+	   if (room !== "atlantis") return this.reply("Atlantis exclusive command");
  	   if (!this.isRoomRanked(room, '%')) return this.reply("``%`` required to use this command!");
  	   if (!arg) return this.reply("Help: ``" + this.cmdToken + "tourprize [user], [prize]``");
 	   let params = arg.split(",");
