@@ -25,4 +25,5 @@ exports.commands = {
       if (prz1 == 'NaN' || prz2 == 'NaN') return this.reply('Error: The Argument must be a number!');
       if (prz1 < 0 || prz2 < 0) return this.reply('Error: The Argument cant be a negative number!');
       if (prz1 > 0 || prz2 > 0) this.reply("/tour prizemoney " + prz1 + ", " + prz2);
+	},
 };
