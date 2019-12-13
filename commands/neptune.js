@@ -23,5 +23,6 @@ exports.commands = {
 		var prz2 = parseFloat(prize2).toFixed(0);
       if (prz2 == 'NaN') return this.reply('Error: The prize must be a number!');
       this.reply("/transfer " + prize1 + ", " + prz2);
+      this.reply("Awarded " + prize1 + " with " + prz2 + " bucks"
 	},
 };
