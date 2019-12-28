@@ -1,52 +1,89 @@
+/**
+ * Ladder Manager
+ */
 
-exports.reportsRoom = false;
+'use strict';
 
-exports.reportBattle = function (room) {
-	if (!exports.reportsRoom) return;
-	var lang = Config.language || 'english';
-	if (Settings.settings['language'] && Settings.settings['language'][exports.reportsRoom]) lang = Settings.settings['language'][exports.reportsRoom];
-	Bot.say(exports.reportsRoom, Tools.translateGlobal('battle', 'battlefound', lang) + ": <<" + room + ">>");
-	exports.reportsRoom = false;
-};
+const Ladder_Check_Interval = 10 * 1000;
 
-exports.laddering = false;
-exports.ladderTimer = null;
+const Path = require('path');
+const Text = Tools('text');
 
-exports.start = function (format) {
-	if (!format) return false;
-	if (exports.laddering) return false;
-	format = toId(format);
-	var check = function () {
-		if (Settings.lockdown) return;
-		var counter = 0;
-		var maxBattles = 1;
-		if (Config.ladderNumberOfBattles && Config.ladderNumberOfBattles > 0) maxBattles = Config.ladderNumberOfBattles;
-		for (var i in Features['battle'].BattleBot.battles) {
-			if (Features['battle'].BattleBot.battles[i].tier && toId(Features['battle'].BattleBot.battles[i].tier) === format && Features['battle'].BattleBot.battles[i].rated) counter++;
+const Lang_File = Path.resolve(__dirname, 'ladder.translations');
+
+exports.setup = function (App) {
+	const Config = App.config.modules.battle;
+
+	function getLanguage(room) {
+		return App.config.language.rooms[room] || App.config.language['default'];
+	}
+
+	const LadderManager = {};
+
+	LadderManager.reportsRoom = false;
+
+	LadderManager.reportBattle = function (room) {
+		if (!LadderManager.reportsRoom) return;
+		if (LadderManager.reportsRoom.charAt(0) === ',') {
+			App.bot.pm(LadderManager.reportsRoom, App.multilang.mlt(Lang_File, getLanguage(room), 0) + ": <<" + room + ">>");
+		} else {
+			App.bot.sendTo(LadderManager.reportsRoom, App.multilang.mlt(Lang_File, getLanguage(room), 0) + ": <<" + room + ">>");
 		}
-		if (counter >= maxBattles) return;
-		var cmds = [];
-		var team = Features['battle'].TeamBuilder.getTeam(format);
-		if (team) cmds.push('|/useteam ' + team);
-		cmds.push('|/search ' + format);
-		Bot.send(cmds);
+		LadderManager.reportsRoom = false;
 	};
-	exports.laddering = true;
-	exports.ladderTimer = setInterval(check, Config.ladderCheckInterval || (10 * 1000));
-	check();
-	return true;
-};
 
-exports.stop = function () {
-	if (!exports.laddering) return false;
-	exports.laddering = false;
-	if (exports.ladderTimer) clearTimeout(exports.ladderTimer);
-	exports.ladderTimer = null;
-	return true;
-};
+	LadderManager.laddering = false;
+	LadderManager.format = '';
+	LadderManager.interv = 0;
+	LadderManager.ladderTimer = null;
 
-exports.destroy = function () {
-	exports.laddering = false;
-	if (exports.ladderTimer) clearTimeout(exports.ladderTimer);
-	exports.ladderTimer = null;
+	LadderManager.start = function (format, checkInterv) {
+		if (!format) return false;
+		if (LadderManager.laddering) return false;
+		let mod = App.modules.battle.system;
+		format = Text.toId(format);
+		let check = function () {
+			if (!App.bot.isConnected()) return;
+			let counter = 0;
+			let maxBattles = 1;
+			if (Config.ladderBattles && Config.ladderBattles > 0) maxBattles = Config.ladderBattles;
+			for (let i in mod.BattleBot.battles) {
+				if (mod.BattleBot.battles[i].tier && Text.toId(mod.BattleBot.battles[i].tier) === format && mod.BattleBot.battles[i].rated) {
+					counter++;
+				}
+			}
+			if (counter >= maxBattles) return;
+			let cmds = [];
+			let team = mod.TeamBuilder.getTeam(format);
+			if (team) {
+				cmds.push('|/useteam ' + team);
+			}
+			cmds.push('|/search ' + format);
+			App.bot.send(cmds);
+		};
+		LadderManager.laddering = true;
+		LadderManager.format = format;
+		LadderManager.interv = checkInterv;
+		LadderManager.ladderTimer = setInterval(check, checkInterv || Ladder_Check_Interval);
+		check();
+		return true;
+	};
+
+	LadderManager.stop = function () {
+		if (!LadderManager.laddering) return false;
+		LadderManager.laddering = false;
+		if (LadderManager.ladderTimer) clearTimeout(LadderManager.ladderTimer);
+		LadderManager.ladderTimer = null;
+		LadderManager.format = '';
+		LadderManager.interv = 0;
+		return true;
+	};
+
+	LadderManager.destroy = function () {
+		LadderManager.laddering = false;
+		if (LadderManager.ladderTimer) clearTimeout(LadderManager.ladderTimer);
+		LadderManager.ladderTimer = null;
+	};
+
+	return LadderManager;
 };

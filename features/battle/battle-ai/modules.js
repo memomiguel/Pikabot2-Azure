@@ -1,59 +1,73 @@
-/*
+/**
  * Battle modules
  */
 
-var modules = exports.modules = {};
+'use strict';
 
-var modFiles = ['singles-eff.js', 'ingame-nostatus.js'];
+const modFiles = ['singles-eff.js', 'ingame-nostatus.js', 'random.js', 'random-move.js', 'random-switch.js'];
 
-modFiles.forEach(function (file) {
-	var mod;
-	try {
-		mod = require("./modules/" + file);
-		if (!mod.id) return;
-		modules[mod.id] = mod;
-		debug("Loaded battle module: " + mod.id + (mod.desc ? (" [" + mod.desc + "]") : ""));
-	} catch (e) {
-		errlog(e.stack);
-		error("Could not import battle module: " + file + " | " + sys.inspect(e));
-	}
-});
+const Path = require('path');
+const Text = Tools('text');
 
-exports.choose = function (battle) {
-	if (!battle.tier) return null;
+exports.setup = function (App, BattleData) {
+	const BattleModulesManager = {};
+	const modules = BattleModulesManager.modules = {};
 
-	if (Config.battleModules && Config.battleModules[toId(battle.tier)]) {
-		var mod = Config.battleModules[toId(battle.tier)];
-		mod = modules[mod];
-		if (mod) {
-			debug("Battle module [" + battle.id + "] - Using " + mod);
-			return mod;
+	modFiles.forEach(function (file) {
+		let mod;
+		try {
+			mod = require(Path.resolve(__dirname, "modules", file)).setup(BattleData);
+			if (!mod.id) return;
+			modules[mod.id] = mod;
+		} catch (e) {
+			App.reportCrash(e);
 		}
-	}
+	});
 
-	/* Module decision by default */
+	BattleModulesManager.choose = function (battle) {
+		if (!battle.tier) return null;
 
-	if (toId(battle.tier) in {'challengecup1v1': 1, '1v1': 1}) {
+		/* Configured Modules */
+
+		let tier = Text.toId(battle.tier);
+
+		if (App.config.modules.battle.battlemods[tier]) {
+			let modid = App.config.modules.battle.battlemods[tier];
+			if (battle.gametype === "singles" || modid !== "singles-eff") {
+				if (modules[modid]) {
+					battle.debug("Battle module [" + battle.id + "] - Using " + modid + " (user configuration)");
+					return modules[modid];
+				}
+			} else {
+				battle.debug("Battle module [" + battle.id + "] - Incompatible (user configuration)");
+			}
+		}
+
+		/* Module decision by default */
+
+		if (tier in {'gen7challengecup1v1': 1, 'challengecup1v1': 1, '1v1': 1}) {
+			if (modules["ingame-nostatus"]) {
+				battle.debug("Battle module [" + battle.id + "] - Using ingame-nostatus");
+				return modules["ingame-nostatus"];
+			}
+		}
+
+		if (battle.gametype === "singles") {
+			if (modules["singles-eff"]) {
+				battle.debug("Battle module [" + battle.id + "] - Using singles-eff");
+				return modules["singles-eff"];
+			}
+		}
+
 		if (modules["ingame-nostatus"]) {
-			debug("Battle module [" + battle.id + "] - Using ingame-nostatus");
+			battle.debug("Battle module [" + battle.id + "] - Using ingame-nostatus");
 			return modules["ingame-nostatus"];
 		}
-	}
 
-	if (battle.gametype === "singles") {
-		if (modules["singles-eff"]) {
-			debug("Battle module [" + battle.id + "] - Using singles-eff");
-			return modules["singles-eff"];
-		}
-	}
+		/* Random, no module designed */
+		battle.debug("Battle module [" + battle.id + "] - Not found, using random");
+		return null;
+	};
 
-	if (modules["ingame-nostatus"]) {
-		debug("Battle module [" + battle.id + "] - Using ingame-nostatus");
-		return modules["ingame-nostatus"];
-	}
-
-	/* Random, no module designed */
-
-	debug("Battle module [" + battle.id + "] - Not found, using random");
-	return null;
+	return BattleModulesManager;
 };

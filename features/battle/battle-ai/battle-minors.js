@@ -1,21 +1,24 @@
-/*
-	Minors
-*/
+/**
+ * Battle Minors
+ */
 
-var battleData = require("./battle-data.js");
+'use strict';
 
-module.exports = {
-	"-damage": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var hp = this.parseHealth(args[2]);
-		poke.hp = hp;
-		if (kwargs.from) {
-			var effect = battleData.getEffect(kwargs.from, this.gen);
-			var ofpoke = this.getActive(kwargs.of);
-			if (effect.effectType === 'Ability' && ofpoke) {
-				ofpoke.markAbility(effect.name);
-			}
-			switch (effect.id) {
+const Text = Tools('text');
+
+exports.setup = function (App, BattleData) {
+	return {
+		"-damage": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let hp = this.parseHealth(args[2]);
+			poke.hp = hp;
+			if (kwargs.from) {
+				let effect = BattleData.getEffect(kwargs.from, this.gen);
+				let ofpoke = this.getActive(kwargs.of);
+				if (effect.effectType === 'Ability' && ofpoke) {
+					ofpoke.markAbility(effect.name);
+				}
+				switch (effect.id) {
 				case 'stealthrock':
 				case 'spikes':
 				case 'recoil':
@@ -45,33 +48,32 @@ module.exports = {
 					if (ofpoke) {
 						return;
 					} else if (effect.effectType === 'Item') {
-						poke.item = battleData.getItem(effect.name, this.gen);
+						poke.item = BattleData.getItem(effect.name, this.gen);
 					} else if (effect.effectType === 'Ability') {
 						poke.markAbility(effect.name);
 					}
 					break;
+				}
 			}
-		}
-	},
+		},
 
-	"-heal": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var det = this.parsePokemonIdent(args[1]);
-		var hp = this.parseHealth(args[2]);
-		poke.hp = hp;
-		if (kwargs.from) {
-			var effect = battleData.getEffect(kwargs.from, this.gen);
-			var ofpoke = this.getActive(kwargs.of);
-			if (effect.effectType === 'Ability') {
-				poke.markAbility(effect.name);
-			}
-			switch (effect.id) {
+		"-heal": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let det = this.parsePokemonIdent(args[1]);
+			let hp = this.parseHealth(args[2]);
+			poke.hp = hp;
+			if (kwargs.from) {
+				let effect = BattleData.getEffect(kwargs.from, this.gen);
+				if (effect.effectType === 'Ability') {
+					poke.markAbility(effect.name);
+				}
+				switch (effect.id) {
 				case 'ingrain':
 				case 'aquaring':
 				case 'drain':
 					break;
 				case 'lunardance':
-					for (var i = 0; i < poke.moves.length; i++) {
+					for (let i = 0; i < poke.moves.length; i++) {
 						poke.moves[i].restorePP();
 					}
 					this.players[det.side].side.wish = null;
@@ -83,165 +85,164 @@ module.exports = {
 				case 'leftovers':
 				case 'shellbell':
 				case 'blacksludge':
-					poke.item = battleData.getItem(effect.name, this.gen);
+					poke.item = BattleData.getItem(effect.name, this.gen);
 					break;
+				}
 			}
-		}
-	},
+		},
 
-	"-sethp": function (args, kwargs) {
-		var poke, hp;
-		for (var i = 1; i < args.length - 1; i += 2) {
-			poke = this.getActive(args[i]);
-			hp = this.parseHealth(args[i + 1]);
-			poke.hp = hp;
-		}
-	},
-
-	"-boost": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var stat = args[2];
-		var n = parseInt(args[3]) || 0;
-		poke.addBoost(stat, n);
-		if (kwargs.from) {
-			var effect = battleData.getEffect(kwargs.from, this.gen);
-			var ofpoke = this.getActive(kwargs.of);
-			if (effect.effectType === 'Ability' && !(effect.id === 'weakarmor' && stat === 'spe')) {
-				(ofpoke || poke).markAbility(effect.name);
+		"-sethp": function (args, kwargs) {
+			let poke, hp;
+			for (let i = 1; i < args.length - 1; i += 2) {
+				poke = this.getActive(args[i]);
+				hp = this.parseHealth(args[i + 1]);
+				poke.hp = hp;
 			}
-		}
-	},
+		},
 
-	"-unboost": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var stat = args[2];
-		var n = parseInt(args[3]) || 0;
-		poke.addBoost(stat, (-1) * n);
-		if (kwargs.from) {
-			var effect = battleData.getEffect(kwargs.from, this.gen);
-			var ofpoke = this.getActive(kwargs.of);
-			if (effect.effectType === 'Ability') {
-				(ofpoke || poke).markAbility(effect.name);
+		"-boost": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let stat = args[2];
+			let n = parseInt(args[3]) || 0;
+			poke.addBoost(stat, n);
+			if (kwargs.from) {
+				let effect = BattleData.getEffect(kwargs.from, this.gen);
+				let ofpoke = this.getActive(kwargs.of);
+				if (effect.effectType === 'Ability' && !(effect.id === 'weakarmor' && stat === 'spe')) {
+					(ofpoke || poke).markAbility(effect.name);
+				}
 			}
-		}
-	},
+		},
 
-	"-setboost": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var stat = args[2];
-		var n = parseInt(args[3]) || 0;
-		poke.setBoost(stat, (-1) * n);
-		if (kwargs.from) {
-			var effect = battleData.getEffect(kwargs.from, this.gen);
-			switch (effect.id) {
+		"-unboost": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let stat = args[2];
+			let n = parseInt(args[3]) || 0;
+			poke.addBoost(stat, (-1) * n);
+			if (kwargs.from) {
+				let effect = BattleData.getEffect(kwargs.from, this.gen);
+				let ofpoke = this.getActive(kwargs.of);
+				if (effect.effectType === 'Ability') {
+					(ofpoke || poke).markAbility(effect.name);
+				}
+			}
+		},
+
+		"-setboost": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let stat = args[2];
+			let n = parseInt(args[3]) || 0;
+			poke.setBoost(stat, (-1) * n);
+			if (kwargs.from) {
+				let effect = BattleData.getEffect(kwargs.from, this.gen);
+				switch (effect.id) {
 				case 'bellydrum':
 					break;
 				case 'angerpoint':
 					poke.markAbility('Anger Point');
 					break;
+				}
 			}
-		}
-	},
+		},
 
-	"-swapboost": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var poke2 = this.getActive(args[2]);
-		if (args[3]) {
-			var stats = args[3].split(",");
-			var stat, tmp;
-			for (var i = 0; i < stats.length; i++) {
-				stat = toId(stats[i]);
-				tmp = poke.boosts[stat];
-				poke.boosts[stat] = poke2.boosts[stat];
-				poke2.boosts[stat] = tmp;
-				if (!poke.boosts[stat]) delete poke.boosts[stat];
-				if (!poke2.boosts[stat]) delete poke2.boosts[stat];
+		"-swapboost": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let poke2 = this.getActive(args[2]);
+			if (args[3]) {
+				let stats = args[3].split(",");
+				let stat, tmp;
+				for (let i = 0; i < stats.length; i++) {
+					stat = Text.toId(stats[i]);
+					tmp = poke.boosts[stat];
+					poke.boosts[stat] = poke2.boosts[stat];
+					poke2.boosts[stat] = tmp;
+					if (!poke.boosts[stat]) delete poke.boosts[stat];
+					if (!poke2.boosts[stat]) delete poke2.boosts[stat];
+				}
+			} else {
+				let tmp = poke.boosts;
+				poke.boosts = poke2.boosts;
+				poke2.boosts = tmp;
 			}
-		} else {
-			var tmp = poke.boosts;
-			poke.boosts = poke2.boosts;
-			poke2.boosts = tmp;
-		}
-	},
+		},
 
-	"-restoreboost": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		for (var i in poke.boosts) {
-			if (poke.boosts[i] < 0)	delete poke.boosts[i];
-		}
-	},
-
-	"-copyboost": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var poke2 = this.getActive(args[2]);
-		if (args[3]) {
-			var stats = args[3].split(",");
-			var stat;
-			for (var i = 0; i < stats.length; i++) {
-				stat = toId(stats[i]);
-				poke.boosts[stat] = poke2.boosts[stat];
-				if (!poke.boosts[stat]) delete poke.boosts[stat];
+		"-restoreboost": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			for (let i in poke.boosts) {
+				if (poke.boosts[i] < 0)	delete poke.boosts[i];
 			}
-		} else {
+		},
+
+		"-copyboost": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let poke2 = this.getActive(args[2]);
+			if (args[3]) {
+				let stats = args[3].split(",");
+				let stat;
+				for (let i = 0; i < stats.length; i++) {
+					stat = Text.toId(stats[i]);
+					poke.boosts[stat] = poke2.boosts[stat];
+					if (!poke.boosts[stat]) delete poke.boosts[stat];
+				}
+			} else {
+				poke.removeAllBoosts();
+				for (let i in poke2.boosts) {
+					poke.boosts[i] = poke2.boosts[i];
+					if (!poke.boosts[i]) delete poke.boosts[i];
+				}
+			}
+		},
+
+		"-clearboost": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
 			poke.removeAllBoosts();
-			for (var i in poke2.boosts) {
-				poke.boosts[i] = poke2.boosts[i];
-				if (!poke.boosts[i]) delete poke.boosts[i];
+		},
+
+		"-invertboost": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			poke.invertAllBoosts();
+		},
+
+		"-clearallboost": function (args, kwargs) {
+			for (let p in this.players) {
+				for (let i = 0; i < this.players[p].active.length; i++) {
+					this.players[p].active[i].removeAllBoosts();
+				}
 			}
-		}
-	},
+		},
 
-	"-clearboost": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		poke.removeAllBoosts();
-	},
+		"-miss": "-crit",
+		"-supereffective": "-crit",
+		"-resisted": "-crit",
+		"-crit": function (args, kwargs, isIntro) {
+			// Not real information - message minors
+			if (isIntro) return;
+			let ident = this.parsePokemonIdent(args[1]);
+			this.message(args[0].substr(1), ident.side, ident.name);
+		},
 
-	"-invertboost": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		poke.invertAllBoosts();
-	},
-
-	"-clearallboost": function (args, kwargs) {
-		for (var p in this.players) {
-			for (var i = 0; i < this.players[p].active.length; i++) {
-				this.players[p].active[i].removeAllBoosts();
-			}
-		}
-	},
-
-	"-miss": "-crit",
-	"-supereffective": "-crit",
-	"-resisted": "-crit",
-	"-crit": function (args, kwargs, isIntro) {
-		// Not real information - message minors
-		if (isIntro) return;
-		var ident = this.parsePokemonIdent(args[1]);
-		this.message(args[0].substr(1), ident.side, ident.name);
-	},
-
-	"-immune": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var effect = battleData.getEffect(args[2], this.gen);
-		var fromeffect = battleData.getEffect(kwargs.from, this.gen);
-		switch (effect.id) {
+		"-immune": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let effect = BattleData.getEffect(args[2], this.gen);
+			let fromeffect = BattleData.getEffect(kwargs.from, this.gen);
+			switch (effect.id) {
 			case 'confusion':
 				break;
 			default:
 				if (fromeffect && fromeffect.effectType === 'Ability') {
 					poke.markAbility(fromeffect.name);
 				}
-		}
-	},
+			}
+		},
 
-	"-fail": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var effect = battleData.getEffect(args[2], this.gen);
-		var fromeffect = battleData.getEffect(kwargs.from, this.gen);
-		var ofpoke = this.getActive(kwargs.of);
-		if (fromeffect.id === 'skydrop') {
-			return;
-		}
-		switch (effect.id) {
+		"-fail": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let effect = BattleData.getEffect(args[2], this.gen);
+			let fromeffect = BattleData.getEffect(kwargs.from, this.gen);
+			if (fromeffect.id === 'skydrop') {
+				return;
+			}
+			switch (effect.id) {
 			case 'brn':
 			case 'tox':
 			case 'psn':
@@ -264,54 +265,54 @@ module.exports = {
 					poke.markAbility(fromeffect.id);
 				}
 				break;
-		}
-	},
-
-	"-prepare": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var move = args[2];
-		var target = this.parsePokemonIdent(args[3]);
-		poke.prepareMove(move, target.slot);
-	},
-
-	"-status": function (args, kwargs, isIntro) {
-		var poke = this.getActive(args[1]);
-		poke.status = args[2];
-		poke.helpers.stausCounter = 0;
-		if (poke.status === "slp") {
-			poke.helpers.sleepCounter = 0;
-		}
-		var det = this.parsePokemonIdent(args[1]);
-		if (!isIntro) this.message("start-" + poke.status, det.side, poke.name); // hax
-	},
-
-	"-curestatus": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		poke.status = '';
-		if (!args[2] || args[2] === "confusion") poke.removeVolatile('confusion');
-	},
-
-	"-cureteam": function (args, kwargs) {
-		var ident = this.parsePokemonIdent(args[1]);
-		if (this.players[ident.side]) {
-			var pokes = this.players[ident.side].pokemon;
-			for (var i = 0; i < pokes.length; i++) {
-				pokes[i].status = '';
 			}
-		}
-	},
+		},
 
-	"-item": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var item = battleData.getItem(args[2], this.gen);
-		var effect = battleData.getEffect(kwargs.from, this.gen);
-		var ofpoke = this.getActive(kwargs.of);
-		poke.item = item;
-		poke.itemEffect = '';
-		poke.removeVolatile('airballoon');
-		if (item.id === 'airballoon') poke.addVolatile('airballoon');
-		if (effect.id) {
-			switch (effect.id) {
+		"-prepare": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let move = args[2];
+			let target = this.parsePokemonIdent(args[3]);
+			poke.prepareMove(move, target.slot);
+		},
+
+		"-status": function (args, kwargs, isIntro) {
+			let poke = this.getActive(args[1]);
+			poke.status = args[2];
+			poke.helpers.stausCounter = 0;
+			if (poke.status === "slp") {
+				poke.helpers.sleepCounter = 0;
+			}
+			let det = this.parsePokemonIdent(args[1]);
+			if (!isIntro) this.message("start-" + poke.status, det.side, poke.name); // hax
+		},
+
+		"-curestatus": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			poke.status = '';
+			if (!args[2] || args[2] === "confusion") poke.removeVolatile('confusion');
+		},
+
+		"-cureteam": function (args, kwargs) {
+			let ident = this.parsePokemonIdent(args[1]);
+			if (this.players[ident.side]) {
+				let pokes = this.players[ident.side].pokemon;
+				for (let i = 0; i < pokes.length; i++) {
+					pokes[i].status = '';
+				}
+			}
+		},
+
+		"-item": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let item = BattleData.getItem(args[2], this.gen);
+			let effect = BattleData.getEffect(kwargs.from, this.gen);
+			let ofpoke = this.getActive(kwargs.of);
+			poke.item = item;
+			poke.itemEffect = '';
+			poke.removeVolatile('airballoon');
+			if (item.id === 'airballoon') poke.addVolatile('airballoon');
+			if (effect.id) {
+				switch (effect.id) {
 				case 'pickup':
 					poke.markAbility('Pickup');
 					poke.itemEffect = 'found';
@@ -344,24 +345,23 @@ module.exports = {
 				case 'trick':
 					poke.itemEffect = 'tricked';
 					break;
+				}
 			}
-		}
-	},
+		},
 
-	"-enditem": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var item = battleData.getItem(args[2], this.gen);
-		var effect = battleData.getEffect(kwargs.from, this.gen);
-		var ofpoke = this.getActive(kwargs.of);
-		poke.item = '';
-		poke.itemEffect = '';
-		poke.prevItem = item;
-		poke.prevItemEffect = '';
-		poke.removeVolatile('airballoon');
-		if (kwargs.eat) {
-			poke.prevItemEffect = 'eaten';
-		} else if (effect.id) {
-			switch (effect.id) {
+		"-enditem": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let item = BattleData.getItem(args[2], this.gen);
+			let effect = BattleData.getEffect(kwargs.from, this.gen);
+			poke.item = '';
+			poke.itemEffect = '';
+			poke.prevItem = item;
+			poke.prevItemEffect = '';
+			poke.removeVolatile('airballoon');
+			if (kwargs.eat) {
+				poke.prevItemEffect = 'eaten';
+			} else if (effect.id) {
+				switch (effect.id) {
 				case 'fling':
 					poke.prevItemEffect = 'flung';
 					break;
@@ -377,9 +377,9 @@ module.exports = {
 				case 'incinerate':
 					poke.prevItemEffect = 'incinerated';
 					break;
-			}
-		} else {
-			switch (item.id) {
+				}
+			} else {
+				switch (item.id) {
 				case 'airballoon':
 					poke.prevItemEffect = 'popped';
 					poke.removeVolatile('airballoon');
@@ -403,62 +403,62 @@ module.exports = {
 					break;
 				default:
 					poke.prevItemEffect = 'consumed';
+				}
 			}
-		}
-	},
+		},
 
-	"-ability": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var ability = battleData.getAbility(args[2], this.gen);
-		var effect = battleData.getEffect(kwargs.from, this.gen);
-		poke.markAbility(ability.name, effect.id && !kwargs.fail);
-		poke.supressedAbility = false;
-	},
+		"-ability": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let ability = BattleData.getAbility(args[2], this.gen);
+			let effect = BattleData.getEffect(kwargs.from, this.gen);
+			poke.markAbility(ability.name, effect.id && !kwargs.fail);
+			poke.supressedAbility = false;
+		},
 
-	"-endability": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		poke.supressedAbility = true;
-	},
+		"-endability": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			poke.supressedAbility = true;
+		},
 
-	"-transform": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var tpoke = this.getActive(args[2]);
-		var effect = battleData.getEffect(kwargs.from, this.gen);
-		if (effect.effectType === 'Ability') {
-			poke.markAbility(effect.name);
-		}
-		poke.transformInto(tpoke);
-	},
+		"-transform": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let tpoke = this.getActive(args[2]);
+			let effect = BattleData.getEffect(kwargs.from, this.gen);
+			if (effect.effectType === 'Ability') {
+				poke.markAbility(effect.name);
+			}
+			poke.transformInto(tpoke);
+		},
 
-	"-formechange": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var template = battleData.getPokemon(args[2], this.gen);
-		var fromeffect = battleData.getEffect(kwargs.from, this.gen);
-		poke.removeVolatile('typeadd');
-		poke.removeVolatile('typechange');
-		if (fromeffect.effectType === 'Ability') {
-			poke.markAbility(fromeffect.name);
-		}
-		poke.addVolatile('formechange');
-		poke.volatiles.formechange = template.species;
-	},
+		"-formechange": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let template = BattleData.getPokemon(args[2], this.gen);
+			let fromeffect = BattleData.getEffect(kwargs.from, this.gen);
+			poke.removeVolatile('typeadd');
+			poke.removeVolatile('typechange');
+			if (fromeffect.effectType === 'Ability') {
+				poke.markAbility(fromeffect.name);
+			}
+			poke.addVolatile('formechange');
+			poke.volatiles.formechange = template.species;
+		},
 
-	"-mega": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var item = battleData.getItem(args[3], this.gen);
-		if (args[2] !== 'Rayquaza') {
-			poke.item = item;
-		}
-	},
+		"-mega": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let item = BattleData.getItem(args[3], this.gen);
+			if (args[2] !== 'Rayquaza') {
+				poke.item = item;
+			}
+		},
 
-	"-start": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var ident = this.parsePokemonIdent(args[1]);
-		var effect = battleData.getEffect(args[2], this.gen);
-		var ofpoke = this.getActive(kwargs.of);
-		var fromeffect = battleData.getEffect(kwargs.from, this.gen);
-		poke.addVolatile(effect.id);
-		switch (effect.id) {
+		"-start": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let ident = this.parsePokemonIdent(args[1]);
+			let effect = BattleData.getEffect(args[2], this.gen);
+			let ofpoke = this.getActive(kwargs.of);
+			let fromeffect = BattleData.getEffect(kwargs.from, this.gen);
+			poke.addVolatile(effect.id);
+			switch (effect.id) {
 			case 'typechange':
 				poke.removeVolatile('typeadd');
 				if (fromeffect.id) {
@@ -502,15 +502,14 @@ module.exports = {
 			case 'futuresight':
 				this.players[ident.side].side.futuresight = {turn: this.turn};
 				break;
-		}
-	},
+			}
+		},
 
-	"-end": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var effect = battleData.getEffect(args[2], this.gen);
-		var fromeffect = battleData.getEffect(kwargs.from, this.gen);
-		poke.removeVolatile(effect.id);
-		switch (effect.id) {
+		"-end": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let effect = BattleData.getEffect(args[2], this.gen);
+			poke.removeVolatile(effect.id);
+			switch (effect.id) {
 			case 'perishsong':
 				poke.removeVolatile('perish3');
 				break;
@@ -519,34 +518,25 @@ module.exports = {
 				poke.removeVolatile('stockpile2');
 				poke.removeVolatile('stockpile3');
 				break;
-		}
-	},
+			}
+		},
 
-	/*"-singleturn": function (args, kwargs) {
-		// Code here
-	},
-
-	"-singlemove": function (args, kwargs) {
-		// Code here
-	},*/
-
-	"-activate": function (args, kwargs) {
-		var poke = this.getActive(args[1]);
-		var ident = this.parsePokemonIdent(args[1]);
-		var effect = battleData.getEffect(args[2], this.gen);
-		var ofpoke = this.getActive(kwargs.of);
-		var ofIdent = this.parsePokemonIdent(kwargs.of);
-		if (effect.effectType === 'Ability') {
-			poke.markAbility(effect.name);
-		}
-		switch (effect.id) {
+		"-activate": function (args, kwargs) {
+			let poke = this.getActive(args[1]);
+			let effect = BattleData.getEffect(args[2], this.gen);
+			let ofpoke = this.getActive(kwargs.of);
+			let ofIdent = this.parsePokemonIdent(kwargs.of);
+			if (effect.effectType === 'Ability') {
+				poke.markAbility(effect.name);
+			}
+			switch (effect.id) {
 			case 'brickbreak':
 				this.players[ofIdent.side].removeSideCondition('Reflect');
 				this.players[ofIdent.side].removeSideCondition('LightScreen');
 				break;
 			case 'spite':
-				var move = battleData.getMove(args[3], this.gen).name;
-				var pp = args[4];
+				let move = BattleData.getMove(args[3], this.gen).name;
+				let pp = args[4];
 				poke.markMove(move, Number(pp) * (-1));
 				break;
 			case 'gravity':
@@ -555,8 +545,8 @@ module.exports = {
 				break;
 			case 'skillswap':
 				if (this.gen <= 4) break;
-				var pokeability = args[3] ? battleData.getAbility(args[3], this.gen) : ofpoke.ability;
-				var ofpokeability = args[4] ? battleData.getAbility(args[4], this.gen) : poke.ability;
+				let pokeability = args[3] ? BattleData.getAbility(args[3], this.gen) : ofpoke.ability;
+				let ofpokeability = args[4] ? BattleData.getAbility(args[4], this.gen) : poke.ability;
 				if (pokeability) {
 					poke.ability = pokeability;
 					if (!ofpoke.baseAbility) ofpoke.baseAbility = pokeability;
@@ -567,55 +557,59 @@ module.exports = {
 				}
 				break;
 			case 'quickclaw':
-				poke.item = battleData.getItem("quickclaw", this.gen);
+				poke.item = BattleData.getItem("quickclaw", this.gen);
 				break;
 			case 'focusband':
-				poke.item = battleData.getItem("focusband", this.gen);
+				poke.item = BattleData.getItem("focusband", this.gen);
 				break;
 			case 'safetygoggles':
-				poke.item = battleData.getItem("safetygoggles", this.gen);
+				poke.item = BattleData.getItem("safetygoggles", this.gen);
 				break;
-		}
-	},
+			}
+		},
 
-	"-sidestart": function (args, kwargs) {
-		var side = this.getSide(args[1]);
-		var effect = battleData.getEffect(args[2], this.gen);
-		side.addSideCondition(effect.name);
-	},
+		"-sidestart": function (args, kwargs) {
+			let side = this.getSide(args[1]);
+			let effect = BattleData.getEffect(args[2], this.gen);
+			side.addSideCondition(effect.name);
+		},
 
-	"-sideend": function (args, kwargs) {
-		var side = this.getSide(args[1]);
-		var effect = battleData.getEffect(args[2], this.gen);
-		side.removeSideCondition(effect.name);
-	},
+		"-sideend": function (args, kwargs) {
+			let side = this.getSide(args[1]);
+			let effect = BattleData.getEffect(args[2], this.gen);
+			side.removeSideCondition(effect.name);
+		},
 
-	"-weather": function (args, kwargs) {
-		var effect = battleData.getEffect(args[1], this.gen);
-		var poke = this.getActive(kwargs.of);
-		var ability = battleData.getEffect(kwargs.from, this.gen);
-		this.conditions.weather = toId(effect.name);
-		this.conditions.turnSetWeather = this.turn;
-		this.conditions.upkeepWeather = !!kwargs.upkeep;
-		if (kwargs.from) poke.markAbility(ability.id);
-	},
+		"-weather": function (args, kwargs) {
+			let effect = BattleData.getEffect(args[1], this.gen);
+			let poke = this.getActive(kwargs.of);
+			let ability = BattleData.getEffect(kwargs.from, this.gen);
+			this.conditions.weather = Text.toId(effect.name);
+			this.conditions.turnSetWeather = this.turn;
+			this.conditions.upkeepWeather = !!kwargs.upkeep;
+			if (kwargs.from) poke.markAbility(ability.id);
+		},
 
-	"-fieldstart": function (args, kwargs) {
-		var effect = battleData.getEffect(args[1], this.gen);
-		var pw = toId(effect.name);
-		this.conditions[pw] = {turn: this.turn};
-	},
+		"-fieldstart": function (args, kwargs) {
+			let effect = BattleData.getEffect(args[1], this.gen);
+			let pw = Text.toId(effect.name);
+			this.conditions[pw] = {turn: this.turn};
+		},
 
-	"-fieldend": function (args, kwargs) {
-		var effect = battleData.getEffect(args[1], this.gen);
-		var pw = toId(effect.name);
-		if (this.conditions[pw]) delete this.conditions[pw];
-	},
+		"-fieldend": function (args, kwargs) {
+			let effect = BattleData.getEffect(args[1], this.gen);
+			let pw = Text.toId(effect.name);
+			if (this.conditions[pw]) delete this.conditions[pw];
+		},
 
-	"-message": function (args, kwargs) {
-		if (args[1] && args[1].indexOf("NOTE: This is an Inverse Battle") >= 0) {
-			this.conditions["inversebattle"] = true;
-			debug(this.id + ": Changed to inverse Battle");
-		}
-	}
+		"-message": function (args, kwargs) {
+			if (args[1] && args[1].indexOf("NOTE: This is an Inverse Battle") >= 0) {
+				this.conditions["inversebattle"] = true;
+				this.debug(this.id + ": Changed to inverse Battle");
+			} else if (args[1] && args[1].trim() === (App.bot.getBotNick() + ' lost due to inactivity.')) {
+				App.log("Bot lost due to inactivity. Battle system error. Room: " +
+				this.id + " | " + JSON.stringify(this.lastSend));
+			}
+		},
+	};
 };

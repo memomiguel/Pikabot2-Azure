@@ -1,72 +1,89 @@
-/*
-	Tournaments parser
-*/
+/**
+ * Tournaments parser
+ */
+
+'use strict';
 
 const ACTION_INTERVAL = 1500;
 
-var tourData = exports.tourData = {};
-var lastAction = exports.lastAction = {};
+const Text = Tools('text');
 
-var canSendCommands = exports.canSendCommands = function (room) {
-	var res = true;
-	if (lastAction[room] && Date.now() - lastAction[room] < ACTION_INTERVAL) res = false;
-	lastAction[room] = Date.now();
-	return res;
-};
+exports.setup = function (App) {
+	const TornamentsManager = {};
+	const tourData = TornamentsManager.tourData = {};
+	const lastAction = TornamentsManager.lastAction = {};
 
-exports.clearData = function () {
-	for (var i in tourData)
-		delete tourData[i];
-};
+	const Config = App.config.modules.battle;
 
-exports.parse = function (room, message, isIntro, spl, toLowerCase) {
-	if (spl[0] !== 'tournament') return;
-	if (!tourData[room]) tourData[room] = {};
-	switch (spl[1]) {
-		case 'create':
-			try{
-				var format = toId(tourData[room].format);
-				if (room == 'lobby' || room == 'monotype' || room == 'tournaments' || room == '1v1' || room == 'neptune' || room == 'hydrocity'){
-				Bot.say('rockethq', '/roompm A ' + format + ' tournament was made in ' + room);
-				}
-			} catch (e){}
-			break;
+	const canSendCommands = TornamentsManager.canSendCommands = function (room) {
+		let res = true;
+		if (lastAction[room] && Date.now() - lastAction[room] < ACTION_INTERVAL) res = false;
+		lastAction[room] = Date.now();
+		return res;
+	};
 
+	TornamentsManager.clearData = function () {
+		for (let i in tourData) {
+			delete tourData[i];
+		}
+	};
+
+	TornamentsManager.parse = function (room, message, isIntro, spl) {
+		if (spl[0] !== 'tournament') return;
+		if (!tourData[room]) tourData[room] = {};
+		let mod = App.modules.battle.system;
+		let cmds = [];
+		switch (spl[1]) {
 		case 'update':
 			try {
-				var data = JSON.parse(spl[2]);
-				for (var i in data)
+				let data = JSON.parse(spl[2]);
+				for (let i in data) {
 					tourData[room][i] = data[i];
-			} catch (e){}
+				}
+			} catch (e) {
+				App.reportCrash(e);
+			}
 			break;
 		case 'updateEnd':
-			if (!Settings.lockdown && Settings.settings['jointours'] && Settings.settings['jointours'][room] && tourData[room].format && !tourData[room].isJoined && !tourData[room].isStarted) {
-				var format = toId(tourData[room].format);
-				if (Formats[format] && !Formats[format].team) {
-					Bot.say(room, '/tour join');
+			if (Config.joinTours && Config.joinTours[room] && tourData[room].format && !tourData[room].isJoined && !tourData[room].isStarted) {
+				let format = Text.toId(tourData[room].format);
+				if (App.bot.formats[format] && !App.bot.formats[format].team) {
+					cmds.push('/tour join');
 				} else {
-					if (Features['battle'].TeamBuilder.hasTeam(tourData[room].format)) Bot.say(room, '/tour join');
-
+					if (mod.TeamBuilder.hasTeam(tourData[room].format)) {
+						cmds.push('/tour join');
+					}
 				}
 			}
-			if (!Settings.lockdown && tourData[room].challenges && tourData[room].challenges.length) {
+			if (tourData[room].challenges && tourData[room].challenges.length) {
 				if (canSendCommands(room)) {
-					var team = Features['battle'].TeamBuilder.getTeam(tourData[room].format);
-					if (team) Bot.say(room, '/useteam ' + team);
-					for (var i = 0; i < tourData[room].challenges.length; i++) Bot.say(room, '/tour challenge ' + tourData[room].challenges[i]);
+					let team = mod.TeamBuilder.getTeam(tourData[room].format);
+					if (team) {
+						cmds.push('/useteam ' + team);
+					}
+					for (let i = 0; i < tourData[room].challenges.length; i++) {
+						cmds.push('/tour challenge ' + tourData[room].challenges[i]);
+					}
 				}
-			} else if (!Settings.lockdown && tourData[room].challenged) {
+			} else if (tourData[room].challenged) {
 				if (canSendCommands(room)) {
-					var team = Features['battle'].TeamBuilder.getTeam(tourData[room].format);
-					if (team) Bot.say(room, '/useteam ' + team);
-					Bot.say(room, '/tour acceptchallenge');
+					let team = mod.TeamBuilder.getTeam(tourData[room].format);
+					if (team) {
+						cmds.push('/useteam ' + team);
+					}
+					cmds.push('/tour acceptchallenge');
 				}
 			}
-
 			break;
 		case 'end':
 		case 'forceend':
 			delete tourData[room];
 			break;
-	}
+		}
+		if (cmds.length > 0) {
+			App.bot.sendTo(room, cmds);
+		}
+	};
+
+	return TornamentsManager;
 };

@@ -1,46 +1,75 @@
+/**
+ * Challenges Manager
+ */
 
-exports.challenges = {};
+'use strict';
 
-function canChallenge(i, nBattles) {
-	if (!nBattles) return true; //If it is not busy, accept the challenge
-	if (Config.aceptAll) return true; //Acept all challenges if 'aceptAll' is enabled
-	if (Config.maxBattles && Config.maxBattles > nBattles) return true; //If it is not in too many battles, accept the challenge
-	if (Tools.equalOrHigherRank(i, Tools.getGroup('driver'))) return true; //Staff exception
-	return false;
-}
+const Text = Tools('text');
 
-exports.parse = function (room, message, isIntro, spl) {
-	if (spl[0] !== 'updatechallenges') return;
-	var nBattles = Object.keys(Features['battle'].BattleBot.battles).length;
-	try {
-		exports.challenges = JSON.parse(message.substr(18));
-	} catch (e) {return;}
-	if (exports.challenges.challengesFrom) {
-		for (var i in exports.challenges.challengesFrom) {
-			if (canChallenge(i, nBattles)) {
-				var format = exports.challenges.challengesFrom[i];
+exports.setup = function (App) {
+	const Config = App.config.modules.battle;
 
-				if (Settings.lockdown || !(format in Formats) || !Formats[format].chall) {
-					Bot.say('', '/reject ' + i);
+	const ChallManager = {};
+	ChallManager.challenges = {};
+
+	function canChallenge(i, nBattles) {
+		if (Config.maxBattles > nBattles) return true;
+		let ident = Text.parseUserIdent(i);
+		if (App.parser.can(ident, 'chall')) return true;
+		return false;
+	}
+
+	ChallManager.parse = function (room, message, isIntro, spl) {
+		let mod = App.modules.battle.system;
+		if (spl[0] !== 'updatechallenges') return;
+		let nBattles = Object.keys(mod.BattleBot.battles).length;
+		try {
+			ChallManager.challenges = JSON.parse(message.substr(18));
+		} catch (e) {
+			App.reportCrash(e);
+			return;
+		}
+		if (ChallManager.challenges.challengesFrom) {
+			let cmds = [];
+			for (let i in ChallManager.challenges.challengesFrom) {
+				if (canChallenge(i, nBattles)) {
+					let format = ChallManager.challenges.challengesFrom[i];
+
+					if (!(format in App.bot.formats) || !App.bot.formats[format].chall) {
+						cmds.push('/reject ' + i);
+						continue;
+					}
+					if (App.bot.formats[format].team && !mod.TeamBuilder.hasTeam(format)) {
+						cmds.push('/reject ' + i);
+						continue;
+					}
+
+					let team = mod.TeamBuilder.getTeam(format);
+					if (team) {
+						cmds.push('/useteam ' + team);
+					}
+					cmds.push('/accept ' + i);
+					nBattles++;
+					if (App.config.debug) {
+						App.log("acepted battle: " + i + " | " + ChallManager.challenges.challengesFrom[i]);
+					}
+				} else {
+					cmds.push('/reject ' + i);
+					if (App.config.debug) {
+						App.log("rejected battle: " + i + " | " + ChallManager.challenges.challengesFrom[i]);
+					}
 					continue;
 				}
-				if (Formats[format].team && !Features['battle'].TeamBuilder.hasTeam(format)) {
-					Bot.say('', '/reject ' + i);
-					continue;
-				}
-
-				var team = Features['battle'].TeamBuilder.getTeam(format);
-				if (team) {
-					Bot.say('', '/useteam ' + team);
-				}
-				Bot.say('', '/accept ' + i);
-				nBattles++;
-				debug("acepted battle: " + i + " | " + exports.challenges.challengesFrom[i]);
-			} else {
-				Bot.say('', '/reject ' + i);
-				debug("rejected battle: " + i + " | " + exports.challenges.challengesFrom[i]);
-				continue;
+			}
+			if (cmds.length > 0) {
+				App.bot.sendTo('', cmds);
 			}
 		}
-	}
+	};
+
+	ChallManager.clean = function () {
+		ChallManager.challenges = {};
+	};
+
+	return ChallManager;
 };
