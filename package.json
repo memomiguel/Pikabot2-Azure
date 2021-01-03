@@ -46,7 +46,7 @@
     "colors": "1.0.3",
     "origindb": "^2.6.1",
     "sugar": "1.4.1",
-    "websocket": "1.0.18"
+    "websocket": "1.0.33"
   },
   "devDependencies": {
     "cache-swap": "~0.2.0",
