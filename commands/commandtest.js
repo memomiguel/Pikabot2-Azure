@@ -160,7 +160,10 @@ exports.commands = {
 	this.reply('/etour Hackmons Cup');
 	this.reply('/tour autodq 2');
 	},
-     
+     ptime: function (arg) {
+     if(!arg) return;
+     this.reply('/poll timer ' + arg);
+     },
      welcome: function (arg) {
 	if (!arg) return;
 	if (!this.can("tournament")) return;
