@@ -130,6 +130,20 @@ exports.commands = {
 	this.reply('/etour Azuremons Challenge Cup 1v1');
 	this.reply('/tour autodq 2');
 	},
+	assb2: function (arg, room, user) {
+        if (!this.can("info")) return;
+	this.reply('/etour assb2');
+	this.reply('/tour autodq 2');
+	},
+	
+	assb2cc1v1: function (arg, room, user) {
+        if (!this.can("info")) return;
+	this.reply('/etour [Gen 7] Azure Super Staff Bros II Challenge Cup 1v1');
+	this.reply('/tour autodq 2');
+	},
+	
+	
+	
      cc2v2: function (arg, room, user) {
         if (!this.can("info")) return;
 	this.reply('/etour Challenge Cup 2v2');
